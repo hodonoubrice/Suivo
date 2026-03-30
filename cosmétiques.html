@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"/>
+<title>Suivo — Cosmétiques</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#f7f5ff;
+  --bg2:#ffffff;
+  --bg3:#ede8ff;
+  --card:#ffffff;
+  --border:rgba(140,80,255,0.13);
+  --mauve:#8c50ff;
+  --mauve2:#6020cc;
+  --mauve-dim:rgba(140,80,255,0.1);
+  --mauve-mid:rgba(140,80,255,0.18);
+  --text:#1a0a3a;
+  --text2:#5a4080;
+  --text3:#9980c0;
+  --danger:#e53935;
+  --danger-bg:rgba(229,57,53,0.08);
+  --success:#00a86b;
+  --success-bg:rgba(0,168,107,0.08);
+  --warn:#f59e0b;
+  --warn-bg:rgba(245,158,11,0.1);
+  --shadow:0 2px 16px rgba(140,80,255,0.1);
+}
+html,body{height:100%;height:100dvh;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden;}
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:480px;margin:0 auto;position:relative;}
+
+/* HEADER */
+.top-bar{
+  padding:16px 18px 12px;
+  display:flex;align-items:center;gap:10px;
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+  box-shadow:var(--shadow);
+}
+.logo-mark{
+  width:34px;height:34px;
+  background:linear-gradient(135deg,var(--mauve),var(--mauve2));
+  border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Serif Display',serif;font-size:16px;color:#fff;
+  flex-shrink:0;
+}
+.logo-text{font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);}
+.boutique-name{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.boutique-name-inner{text-align:right;}
+.boutique-name strong{display:block;font-size:13px;color:var(--text);font-weight:600;}
+.boutique-name span{font-size:11px;color:var(--text3);}
+.settings-btn{
+  background:var(--mauve-dim);border:1px solid var(--border);
+  border-radius:8px;width:32px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;cursor:pointer;flex-shrink:0;border:none;
+}
+
+/* TAB NAV */
+.tab-nav{
+  display:flex;background:#fff;
+  border-top:2px solid var(--border);
+  flex-shrink:0;order:10;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  box-shadow:0 -2px 12px rgba(140,80,255,0.08);
+}
+.tab-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:9px 4px 10px;
+  border:none;background:none;color:var(--text3);
+  font-family:'DM Sans',sans-serif;font-size:9px;
+  letter-spacing:0.4px;text-transform:uppercase;cursor:pointer;
+  transition:all 0.15s;gap:3px;
+}
+.tab-btn .icon{font-size:17px;line-height:1;}
+.tab-btn.active{color:var(--mauve);}
+.tab-indicator{width:18px;height:2px;background:transparent;border-radius:2px;margin-top:1px;}
+.tab-btn.active .tab-indicator{background:var(--mauve);}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--bg);}
+.tab-pane{display:none;padding:14px 14px 24px;background:var(--bg);}
+.tab-pane.active{display:block;}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow);}
+.card-title{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mauve);margin-bottom:12px;font-weight:600;}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.stat-card{
+  background:#fff;border:1px solid var(--border);border-radius:14px;
+  padding:14px;box-shadow:var(--shadow);
+}
+.stat-val{font-family:'DM Serif Display',serif;font-size:28px;color:var(--mauve);}
+.stat-lbl{font-size:10px;color:var(--text3);letter-spacing:0.3px;margin-top:2px;}
+
+/* ALERT ITEMS */
+.alert-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 0;border-bottom:1px solid rgba(140,80,255,0.07);
+}
+.alert-item:last-child{border-bottom:none;}
+.alert-avatar{
+  width:34px;height:34px;border-radius:50%;
+  background:var(--mauve-dim);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:var(--mauve);flex-shrink:0;
+}
+.alert-info{flex:1;min-width:0;}
+.alert-name{font-size:13px;font-weight:600;color:var(--text);}
+.alert-days{font-size:11px;color:var(--text3);margin-top:1px;}
+.alert-badge{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600;}
+.badge-warn{background:var(--warn-bg);color:var(--warn);}
+.badge-danger{background:var(--danger-bg);color:var(--danger);}
+.badge-ok{background:var(--success-bg);color:var(--success);}
+.badge-mauve{background:var(--mauve-dim);color:var(--mauve);}
+
+/* SECTION TITLE */
+.section-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mauve);margin-bottom:10px;font-weight:600;}
+
+/* FORMS */
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px;}
+.field label{font-size:11px;color:var(--text2);letter-spacing:0.3px;font-weight:500;}
+.field input,.field select,.field textarea{
+  background:var(--bg);border:1px solid rgba(140,80,255,0.15);
+  border-radius:10px;padding:11px 13px;
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;
+  outline:none;transition:border-color 0.2s;width:100%;
+  -webkit-appearance:none;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--mauve);background:#fff;}
+.field textarea{resize:none;min-height:64px;}
+.field select{cursor:pointer;}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* BUTTONS */
+.btn{
+  border:none;border-radius:12px;padding:13px 18px;
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;transition:opacity 0.15s;width:100%;display:block;text-align:center;
+}
+.btn:active{opacity:0.8;}
+.btn-primary{background:linear-gradient(135deg,var(--mauve),var(--mauve2));color:#fff;box-shadow:0 4px 16px rgba(140,80,255,0.25);}
+.btn-ghost{background:var(--mauve-dim);border:1px solid var(--border);color:var(--mauve);}
+.btn-danger{background:var(--danger-bg);color:var(--danger);border:1px solid rgba(229,57,53,0.2);}
+.btn-green{background:linear-gradient(135deg,#25d366,#128c4e);color:#fff;box-shadow:0 4px 14px rgba(37,211,102,0.2);}
+.btn-sm{padding:7px 13px;font-size:12px;border-radius:8px;width:auto;display:inline-block;}
+
+/* CLIENT LIST */
+.client-item{
+  display:flex;align-items:center;gap:11px;
+  padding:11px 0;border-bottom:1px solid rgba(140,80,255,0.07);cursor:pointer;
+}
+.client-item:last-child{border-bottom:none;}
+.client-avatar{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--mauve-dim);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:var(--mauve);flex-shrink:0;
+}
+.client-info{flex:1;min-width:0;}
+.client-name{font-size:14px;font-weight:600;color:var(--text);}
+.client-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.client-right{text-align:right;flex-shrink:0;}
+
+/* STOCK */
+.stock-item{
+  display:flex;align-items:center;gap:11px;
+  padding:11px 0;border-bottom:1px solid rgba(140,80,255,0.07);
+}
+.stock-item:last-child{border-bottom:none;}
+.stock-icon{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--mauve-dim);
+  display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;
+}
+.stock-info{flex:1;min-width:0;}
+.stock-name{font-size:13px;font-weight:600;color:var(--text);}
+.stock-cat{font-size:11px;color:var(--text3);margin-top:1px;}
+.stock-right{text-align:right;flex-shrink:0;}
+.stock-qty{font-family:'DM Serif Display',serif;font-size:20px;color:var(--text);}
+.stock-qty.low{color:var(--danger);}
+.stock-qty.ok{color:var(--success);}
+.stock-prix{font-size:11px;color:var(--text3);margin-top:1px;}
+
+/* CREDIT LIST */
+.credit-item{
+  display:flex;align-items:center;gap:11px;
+  padding:11px 0;border-bottom:1px solid rgba(140,80,255,0.07);cursor:pointer;
+}
+.credit-item:last-child{border-bottom:none;}
+.credit-montant{
+  font-family:'DM Serif Display',serif;font-size:18px;
+  color:var(--danger);flex-shrink:0;text-align:right;
+}
+
+/* REÇU */
+.ligne-row{display:grid;grid-template-columns:1fr 50px 80px 28px;gap:6px;align-items:center;margin-bottom:6px;}
+.ligne-row input{
+  background:var(--bg);border:1px solid rgba(140,80,255,0.15);
+  border-radius:8px;padding:9px;color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:13px;outline:none;width:100%;
+}
+.ligne-row input:focus{border-color:var(--mauve);}
+.remove-btn{
+  width:28px;height:28px;background:var(--danger-bg);
+  border:none;border-radius:6px;color:var(--danger);font-size:18px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.add-ligne{
+  background:none;border:1px dashed rgba(140,80,255,0.3);
+  border-radius:9px;padding:9px;color:var(--mauve);font-size:12px;
+  cursor:pointer;width:100%;font-family:'DM Sans',sans-serif;margin-bottom:10px;
+}
+.total-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 0 0;border-top:1px solid var(--border);
+}
+.total-lbl{font-size:11px;color:var(--text3);}
+.total-val{font-family:'DM Serif Display',serif;font-size:22px;color:var(--mauve);}
+
+/* RECEIPT PREVIEW */
+.recu-preview{
+  background:#fff;border-radius:16px;overflow:hidden;
+  box-shadow:0 4px 24px rgba(140,80,255,0.15);border:1px solid var(--border);
+  margin-bottom:14px;color:var(--text);
+}
+.rp-head{background:linear-gradient(135deg,var(--mauve),var(--mauve2));padding:18px 20px;color:#fff;}
+.rp-head-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.rp-logo{display:flex;align-items:center;gap:8px;}
+.rp-logo-mark{width:26px;height:26px;background:rgba(255,255,255,0.2);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:13px;color:#fff;}
+.rp-logo-name{font-family:'DM Serif Display',serif;font-size:15px;color:#fff;}
+.rp-badge{background:rgba(255,255,255,0.2);border-radius:5px;padding:3px 9px;font-size:9px;color:#fff;letter-spacing:1px;text-transform:uppercase;}
+.rp-biz{font-family:'DM Serif Display',serif;font-size:18px;color:#fff;margin-bottom:2px;}
+.rp-sector{font-size:11px;color:rgba(255,255,255,0.7);}
+.rp-meta{background:var(--bg);padding:12px 18px;display:grid;grid-template-columns:1fr 1fr;gap:8px;border-bottom:1px solid var(--border);}
+.rp-meta-lbl{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;}
+.rp-meta-val{font-size:12px;color:var(--text);font-weight:500;margin-top:1px;}
+.rp-body{padding:14px 18px;}
+.rp-th{display:grid;grid-template-columns:1fr 32px 70px;gap:6px;font-size:9px;color:var(--text3);letter-spacing:0.8px;text-transform:uppercase;padding-bottom:7px;border-bottom:1px solid var(--border);margin-bottom:7px;}
+.rp-th span:not(:first-child){text-align:right;}
+.rp-ligne{display:grid;grid-template-columns:1fr 32px 70px;gap:6px;padding:7px 0;border-bottom:1px solid rgba(140,80,255,0.07);align-items:center;}
+.rp-ligne:last-child{border-bottom:none;}
+.rp-desc{font-size:12px;color:var(--text);font-weight:500;}
+.rp-qty{font-size:11px;color:var(--text3);text-align:right;}
+.rp-prix{font-size:12px;color:var(--mauve2);font-weight:600;text-align:right;}
+.rp-total{margin:6px 18px 0;background:linear-gradient(135deg,var(--mauve),var(--mauve2));border-radius:10px;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;}
+.rp-total-lbl{font-size:10px;color:rgba(255,255,255,0.7);letter-spacing:1px;text-transform:uppercase;}
+.rp-total-val{font-family:'DM Serif Display',serif;font-size:22px;color:#fff;}
+.rp-note{margin:10px 18px;padding:10px 12px;background:var(--bg);border-radius:8px;font-size:11px;color:var(--text3);font-style:italic;}
+.rp-footer{padding:12px 18px 16px;text-align:center;border-top:1px dashed rgba(140,80,255,0.2);}
+.rp-merci{font-family:'DM Serif Display',serif;font-size:13px;color:var(--text);}
+.rp-powered{font-size:9px;color:var(--text3);margin-top:3px;}
+
+/* MODAL */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(26,10,58,0.5);
+  z-index:100;display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.2s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{
+  background:#fff;border-radius:20px 20px 0 0;
+  padding:22px 18px 36px;width:100%;max-width:480px;
+  max-height:88vh;overflow-y:auto;
+  transform:translateY(100%);transition:transform 0.25s ease;
+  border-top:2px solid var(--border);
+}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-handle{width:34px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 18px;}
+.modal-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--text);margin-bottom:16px;}
+
+/* FICHE */
+.fiche-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mauve);margin-bottom:8px;font-weight:600;}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(140,80,255,0.07);}
+.info-row:last-child{border-bottom:none;}
+.info-key{font-size:12px;color:var(--text3);}
+.info-val{font-size:13px;color:var(--text);font-weight:500;}
+.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--mauve);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;padding:0;margin-bottom:14px;}
+
+/* HISTORIQUE */
+.visite-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(140,80,255,0.07);font-size:12px;}
+.visite-item:last-child{border-bottom:none;}
+.visite-dot{width:6px;height:6px;border-radius:50%;background:var(--mauve);flex-shrink:0;}
+.visite-date{color:var(--text3);width:80px;flex-shrink:0;}
+.visite-service{color:var(--text);flex:1;}
+.visite-montant{color:var(--mauve);font-weight:600;}
+
+/* SEARCH */
+.search-wrap{position:relative;margin-bottom:12px;}
+.search-wrap input{background:#fff;border:1px solid var(--border);border-radius:12px;padding:11px 13px 11px 36px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;width:100%;}
+.search-wrap input:focus{border-color:var(--mauve);}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:14px;opacity:0.5;}
+
+/* EMPTY */
+.empty{text-align:center;padding:36px 20px;}
+.empty-icon{font-size:38px;margin-bottom:10px;opacity:0.4;}
+.empty-text{font-size:13px;color:var(--text3);line-height:1.6;}
+
+/* CREDIT BADGE */
+.credit-tag{
+  display:inline-flex;align-items:center;gap:4px;
+  background:var(--danger-bg);color:var(--danger);
+  border-radius:6px;padding:2px 8px;font-size:11px;font-weight:600;
+}
+
+::-webkit-scrollbar{width:0;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="top-bar">
+    <div class="logo-mark">S</div>
+    <span class="logo-text">Suivo</span>
+    <div class="boutique-name">
+      <div class="boutique-name-inner">
+        <strong id="boutiqueNameDisplay">Ma Boutique</strong>
+        <span id="boutiqueTypeDisplay">Cosmétiques</span>
+      </div>
+      <button class="settings-btn" onclick="openModal('modalSettings')">⚙️</button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ===== ACCUEIL ===== -->
+    <div class="tab-pane active" id="pane-accueil">
+      <div style="padding:12px 0 10px;">
+        <p style="font-size:11px;color:var(--text3);" id="dateToday"></p>
+        <h1 style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);margin-top:2px;">Bonjour 👋</h1>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-val" id="statClients">0</div><div class="stat-lbl">Clients total</div></div>
+        <div class="stat-card"><div class="stat-val" id="statCredits">0</div><div class="stat-lbl">Crédits en cours</div></div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-val" id="statStockFaible">0</div><div class="stat-lbl">Stock faible</div></div>
+        <div class="stat-card"><div class="stat-val" id="statDette">0</div><div class="stat-lbl">Total dû (FCFA)</div></div>
+      </div>
+
+      <!-- Crédits en retard -->
+      <div class="card">
+        <div class="card-title">💸 Crédits à récupérer</div>
+        <div id="accueilCreditsList"></div>
+      </div>
+
+      <!-- Stock faible -->
+      <div class="card">
+        <div class="card-title">📦 Stock faible / rupture</div>
+        <div id="accueilStockList"></div>
+      </div>
+    </div>
+
+    <!-- ===== CLIENTS ===== -->
+    <div class="tab-pane" id="pane-clients">
+      <div id="clientsListView">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;margin-top:4px;">
+          <p class="section-title" style="margin:0;">Mes clients</p>
+          <button class="btn btn-primary btn-sm" onclick="openModal('modalNouveauClient')">+ Nouveau</button>
+        </div>
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Rechercher un client..." id="searchClient" oninput="renderClients()"/>
+        </div>
+        <div id="clientsList"></div>
+      </div>
+      <div id="ficheView" style="display:none;">
+        <button class="back-btn" onclick="closeFiche()">← Retour</button>
+        <div id="ficheContent"></div>
+      </div>
+    </div>
+
+    <!-- ===== STOCK ===== -->
+    <div class="tab-pane" id="pane-stock">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;margin-top:4px;">
+        <p class="section-title" style="margin:0;">Mon stock</p>
+        <button class="btn btn-primary btn-sm" onclick="openModal('modalNouveauProduit')">+ Produit</button>
+      </div>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" placeholder="Rechercher un produit..." id="searchProduit" oninput="renderStock()"/>
+      </div>
+      <div id="stockList"></div>
+    </div>
+
+    <!-- ===== REÇUS ===== -->
+    <div class="tab-pane" id="pane-recus">
+      <div id="recuFormView">
+        <p class="section-title">Nouveau reçu</p>
+        <div class="card">
+          <div class="card-title">Client</div>
+          <div class="field">
+            <label>Nom du client</label>
+            <input id="recuClient" placeholder="Ex : Adjoua Kone" list="clientsSuggest"/>
+            <datalist id="clientsSuggest"></datalist>
+          </div>
+          <div class="field">
+            <label>Type de vente</label>
+            <select id="recuType">
+              <option value="comptant">Paiement comptant</option>
+              <option value="credit">Vente à crédit</option>
+              <option value="partiel">Paiement partiel</option>
+            </select>
+          </div>
+          <div class="field" id="recuPartielField" style="display:none;">
+            <label>Montant payé maintenant (FCFA)</label>
+            <input id="recuPaye" inputmode="numeric" pattern="[0-9]*" placeholder="Ex : 2000"/>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <div style="display:flex;justify-content:space-between;">
+              <span>Produits / Articles</span>
+              <span style="font-size:9px;color:var(--text3);">ARTICLE · QTÉ · PRIX</span>
+            </div>
+          </div>
+          <div id="lignesContainer"></div>
+          <button class="add-ligne" onclick="addLigne()">+ Ajouter un article</button>
+          <div class="total-bar">
+            <span class="total-lbl">TOTAL</span>
+            <span class="total-val" id="totalDisplay">0 FCFA</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Note (optionnel)</div>
+          <div class="field"><textarea id="recuNote" placeholder="Ex : Livraison à domicile..."></textarea></div>
+        </div>
+        <button class="btn btn-primary" onclick="genererRecu()">Générer le reçu →</button>
+      </div>
+
+      <div id="recuPreviewView" style="display:none;">
+        <button class="back-btn" onclick="document.getElementById('recuFormView').style.display='block';document.getElementById('recuPreviewView').style.display='none';">← Modifier</button>
+        <div class="recu-preview" id="recuOutput"></div>
+        <div style="height:8px;"></div>
+        <button class="btn btn-green" style="margin-bottom:8px;" onclick="envoyerRecuWA()">📲 Envoyer sur WhatsApp</button>
+        <div style="text-align:center;font-size:11px;color:var(--text3);margin-bottom:12px;">ou 📸 capture d'écran</div>
+        <button class="btn btn-primary" onclick="nouveauRecu()">Nouveau reçu</button>
+        <div style="height:8px;"></div>
+        <button class="btn btn-ghost" onclick="nouveauRecuMemeClient()">Même client, nouveau reçu</button>
+      </div>
+    </div>
+
+    <!-- ===== CRÉDITS ===== -->
+    <div class="tab-pane" id="pane-credits">
+      <div style="margin-top:4px;margin-bottom:12px;">
+        <p class="section-title" style="margin:0 0 2px;">Crédits & Dettes</p>
+        <p style="font-size:11px;color:var(--text3);">Clients qui doivent de l'argent</p>
+      </div>
+      <div class="card" style="background:var(--danger-bg);border-color:rgba(229,57,53,0.2);">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:12px;color:var(--danger);font-weight:600;">Total à récupérer</span>
+          <span style="font-family:'DM Serif Display',serif;font-size:24px;color:var(--danger);" id="totalCreditsDisplay">0 FCFA</span>
+        </div>
+      </div>
+      <div id="creditsList"></div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- TAB NAV -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('accueil',this)">
+      <span class="icon">🏠</span><span>Accueil</span>
+      <div class="tab-indicator"></div>
+    </button>
+    <button class="tab-btn" onclick="switchTab('clients',this)">
+      <span class="icon">👤</span><span>Clients</span>
+      <div class="tab-indicator"></div>
+    </button>
+    <button class="tab-btn" onclick="switchTab('stock',this)">
+      <span class="icon">📦</span><span>Stock</span>
+      <div class="tab-indicator"></div>
+    </button>
+    <button class="tab-btn" onclick="switchTab('recus',this)">
+      <span class="icon">🧾</span><span>Reçus</span>
+      <div class="tab-indicator"></div>
+    </button>
+    <button class="tab-btn" onclick="switchTab('credits',this)">
+      <span class="icon">💸</span><span>Crédits</span>
+      <div class="tab-indicator"></div>
+    </button>
+  </nav>
+</div>
+
+<!-- ===== MODAL NOUVEAU CLIENT ===== -->
+<div class="modal-overlay" id="modalNouveauClient" onclick="closeModalOutside(event,'modalNouveauClient')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Nouveau client</div>
+    <div class="field"><label>Nom complet *</label><input id="nc_nom" placeholder="Ex : Adjoua Mensah"/></div>
+    <div class="field"><label>Téléphone</label><input id="nc_tel" placeholder="+229 97 00 00 00" type="tel"/></div>
+    <div class="field"><label>Produit favori</label><input id="nc_service" placeholder="Ex : Crème Nivea, Huile de coco..."/></div>
+    <div class="field"><label>Dernière visite</label><input id="nc_derniere" type="date"/></div>
+    <div class="field"><label>Note</label><textarea id="nc_note" placeholder="Préférences, quartier..."></textarea></div>
+    <div style="height:8px;"></div>
+    <button class="btn btn-primary" onclick="saveClient()">Enregistrer le client</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalNouveauClient')">Annuler</button>
+  </div>
+</div>
+
+<!-- ===== MODAL MODIFIER CLIENT ===== -->
+<div class="modal-overlay" id="modalEditClient" onclick="closeModalOutside(event,'modalEditClient')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Modifier le client</div>
+    <input type="hidden" id="edit_clientId"/>
+    <div class="field"><label>Nom complet *</label><input id="edit_nom" placeholder="Nom complet"/></div>
+    <div class="field"><label>Téléphone</label><input id="edit_tel" type="tel"/></div>
+    <div class="field"><label>Produit favori</label><input id="edit_service"/></div>
+    <div class="field"><label>Dernière visite</label><input id="edit_derniere" type="date"/></div>
+    <div class="field"><label>Note</label><textarea id="edit_note"></textarea></div>
+    <div style="height:8px;"></div>
+    <button class="btn btn-primary" onclick="saveEditClient()">Enregistrer</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalEditClient')">Annuler</button>
+  </div>
+</div>
+
+<!-- ===== MODAL NOUVEL ACHAT ===== -->
+<div class="modal-overlay" id="modalNouvelAchat" onclick="closeModalOutside(event,'modalNouvelAchat')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Enregistrer un achat</div>
+    <input type="hidden" id="achat_clientId"/>
+    <div class="field"><label>Date</label><input id="achat_date" type="date"/></div>
+    <div class="field"><label>Produit(s) acheté(s)</label><input id="achat_produit" placeholder="Ex : Crème éclaircissante 200ml"/></div>
+    <div class="field"><label>Montant total (FCFA)</label><input id="achat_montant" inputmode="numeric" placeholder="3500"/></div>
+    <div class="field"><label>Mode de paiement</label>
+      <select id="achat_mode">
+        <option value="comptant">Comptant</option>
+        <option value="credit">À crédit</option>
+        <option value="partiel">Partiel</option>
+      </select>
+    </div>
+    <div class="field" id="achat_paye_field" style="display:none;">
+      <label>Montant payé maintenant (FCFA)</label>
+      <input id="achat_paye" inputmode="numeric" placeholder="1000"/>
+    </div>
+    <div style="height:8px;"></div>
+    <button class="btn btn-primary" onclick="saveAchat()">Enregistrer</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalNouvelAchat')">Annuler</button>
+  </div>
+</div>
+
+<!-- ===== MODAL REMBOURSEMENT ===== -->
+<div class="modal-overlay" id="modalRemboursement" onclick="closeModalOutside(event,'modalRemboursement')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">💸 Remboursement reçu</div>
+    <input type="hidden" id="remb_clientId"/>
+    <div id="remb_info" style="background:var(--danger-bg);border-radius:10px;padding:12px;margin-bottom:14px;font-size:13px;color:var(--danger);"></div>
+    <div class="field"><label>Montant remboursé (FCFA)</label><input id="remb_montant" inputmode="numeric" placeholder="Ex : 2000"/></div>
+    <div style="height:8px;"></div>
+    <button class="btn btn-primary" onclick="saveRemboursement()">Confirmer le remboursement</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalRemboursement')">Annuler</button>
+  </div>
+</div>
+
+<!-- ===== MODAL NOUVEAU PRODUIT ===== -->
+<div class="modal-overlay" id="modalNouveauProduit" onclick="closeModalOutside(event,'modalNouveauProduit')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Nouveau produit</div>
+    <div class="field"><label>Nom du produit *</label><input id="prod_nom" placeholder="Ex : Crème Olay 200ml"/></div>
+    <div class="field"><label>Catégorie</label><input id="prod_cat" placeholder="Ex : Crèmes, Huiles, Parfums..."/></div>
+    <div class="cols2">
+      <div class="field"><label>Quantité en stock</label><input id="prod_qty" inputmode="numeric" placeholder="10"/></div>
+      <div class="field"><label>Seuil d'alerte</label><input id="prod_seuil" inputmode="numeric" placeholder="3"/></div>
+    </div>
+    <div class="field"><label>Prix de vente (FCFA)</label><input id="prod_prix" inputmode="numeric" placeholder="2500"/></div>
+    <div style="height:8px;"></div>
+    <button class="btn btn-primary" onclick="saveProduit()">Enregistrer le produit</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalNouveauProduit')">Annuler</button>
+  </div>
+</div>
+
+<!-- ===== MODAL MODIFIER PRODUIT ===== -->
+<div class="modal-overlay" id="modalEditProduit" onclick="closeModalOutside(event,'modalEditProduit')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Modifier le produit</div>
+    <input type="hidden" id="editprod_id"/>
+    <div class="field"><label>Nom du produit *</label><input id="editprod_nom"/></div>
+    <div class="field"><label>Catégorie</label><input id="editprod_cat"/></div>
+    <div class="cols2">
+      <div class="field"><label>Quantité</label><input id="editprod_qty" inputmode="numeric"/></div>
+      <div class="field"><label>Seuil alerte</label><input id="editprod_seuil" inputmode="numeric"/></div>
+    </div>
+    <div class="field"><label>Prix de vente (FCFA)</label><input id="editprod_prix" inputmode="numeric"/></div>
+    <div style="height:8px;"></div>
+    <button class="btn btn-primary" onclick="saveEditProduit()">Enregistrer</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalEditProduit')">Annuler</button>
+  </div>
+</div>
+
+<!-- ===== MODAL RELANCE ===== -->
+<div class="modal-overlay" id="modalRelance" onclick="closeModalOutside(event,'modalRelance')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">💬 Message de relance</div>
+    <input type="hidden" id="relance_clientId"/>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:12px;background:var(--bg3);border-radius:12px;border:1px solid var(--border);">
+      <div style="font-size:20px;">💄</div>
+      <div>
+        <div id="relance_nom" style="font-size:14px;font-weight:600;color:var(--text);"></div>
+        <div id="relance_tel" style="font-size:12px;color:var(--text3);margin-top:2px;"></div>
+      </div>
+    </div>
+    <div class="field"><label>Message (modifiable)</label><textarea id="relance_message" style="min-height:130px;font-size:13px;line-height:1.6;"></textarea></div>
+    <div style="height:8px;"></div>
+    <button class="btn btn-green" onclick="envoyerRelanceWA()">📲 Ouvrir dans WhatsApp</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" id="btnCopier" onclick="copierRelance()">📋 Copier le message</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalRelance')">Annuler</button>
+  </div>
+</div>
+
+<!-- ===== MODAL RELANCE CREDIT ===== -->
+<div class="modal-overlay" id="modalRelanceCredit" onclick="closeModalOutside(event,'modalRelanceCredit')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">💸 Relance crédit</div>
+    <input type="hidden" id="relcredit_clientId"/>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:12px;background:var(--danger-bg);border-radius:12px;">
+      <div style="font-size:20px;">💸</div>
+      <div>
+        <div id="relcredit_nom" style="font-size:14px;font-weight:600;color:var(--text);"></div>
+        <div id="relcredit_montant" style="font-size:13px;color:var(--danger);font-weight:600;margin-top:2px;"></div>
+      </div>
+    </div>
+    <div class="field"><label>Message (modifiable)</label><textarea id="relcredit_message" style="min-height:130px;font-size:13px;line-height:1.6;"></textarea></div>
+    <div style="height:8px;"></div>
+    <button class="btn btn-green" onclick="envoyerRelanceCreditWA()">📲 Ouvrir dans WhatsApp</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalRelanceCredit')">Annuler</button>
+  </div>
+</div>
+
+<!-- ===== MODAL CONFIRMATION ===== -->
+<div class="modal-overlay" id="modalConfirm" onclick="closeModalOutside(event,'modalConfirm')">
+  <div class="modal" style="padding-bottom:28px;">
+    <div class="modal-handle"></div>
+    <div style="text-align:center;font-size:32px;margin-bottom:10px;">⚠️</div>
+    <div id="confirm_msg" style="text-align:center;font-size:14px;color:var(--text);line-height:1.6;margin-bottom:22px;"></div>
+    <input type="hidden" id="confirm_deleteId"/>
+    <input type="hidden" id="confirm_type"/>
+    <button class="btn btn-danger" onclick="confirmDelete()">Oui, supprimer</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalConfirm')">Annuler</button>
+  </div>
+</div>
+
+<!-- ===== MODAL SETTINGS ===== -->
+<div class="modal-overlay" id="modalSettings" onclick="closeModalOutside(event,'modalSettings')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">⚙️ Paramètres de la boutique</div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:16px;line-height:1.6;">Personnalise l'app avec les informations de ta boutique.</div>
+    <div class="field"><label>Nom de la boutique *</label><input id="set_nom" placeholder="Ex : Beauty Shop Adjoua"/></div>
+    <div class="field"><label>Nom de la gérante</label><input id="set_proprio" placeholder="Ex : Adjoua"/></div>
+    <div class="field"><label>Téléphone WhatsApp</label><input id="set_tel" placeholder="+229 97 00 00 00" type="tel"/></div>
+    <div style="height:8px;"></div>
+    <button class="btn btn-primary" onclick="saveSettings()">Enregistrer</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalSettings')">Annuler</button>
+  </div>
+</div>
+
+<script>
+// =================== DATA ===================
+let DB = JSON.parse(localStorage.getItem('suivo_cosmetiques') || '{"clients":[],"produits":[],"salonName":"Ma Boutique","salonTel":"","salonProprio":""}');
+function save(){localStorage.setItem('suivo_cosmetiques',JSON.stringify(DB));}
+function fmtFCFA(n){return Number(n).toLocaleString('fr-FR')+' FCFA';}
+function fmtDate(d){if(!d)return '—';const dt=new Date(d+'T00:00:00');return dt.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});}
+function todayISO(){return new Date().toISOString().split('T')[0];}
+function daysDiff(dateISO){if(!dateISO)return 999;const d=new Date(dateISO+'T00:00:00');return Math.floor((new Date()-d)/(1000*60*60*24));}
+function initials(name){return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);}
+function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function genNumero(){const d=new Date();return`SUV-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-${Math.floor(100+Math.random()*900)}`;}
+function fmtWATel(tel){const num=tel.replace(/[^0-9]/g,'');return num.startsWith('229')?num:'229'+num;}
+
+// Init header
+document.getElementById('boutiqueNameDisplay').textContent = DB.salonName||'Ma Boutique';
+document.getElementById('dateToday').textContent = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+// =================== TABS ===================
+function switchTab(name,btn){
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('pane-'+name).classList.add('active');
+  btn.classList.add('active');
+  if(name==='accueil') renderAccueil();
+  if(name==='clients') renderClients();
+  if(name==='stock') renderStock();
+  if(name==='recus') initRecuForm();
+  if(name==='credits') renderCredits();
+}
+
+// =================== MODAL ===================
+function openModal(id){
+  document.getElementById(id).classList.add('open');
+  if(id==='modalNouveauClient'){
+    ['nc_nom','nc_tel','nc_service','nc_note'].forEach(f=>document.getElementById(f).value='');
+    document.getElementById('nc_derniere').value=todayISO();
+  }
+  if(id==='modalNouvelAchat'){
+    document.getElementById('achat_date').value=todayISO();
+    ['achat_produit','achat_montant','achat_paye'].forEach(f=>document.getElementById(f).value='');
+    document.getElementById('achat_mode').value='comptant';
+    document.getElementById('achat_paye_field').style.display='none';
+  }
+  if(id==='modalNouveauProduit'){
+    ['prod_nom','prod_cat','prod_qty','prod_seuil','prod_prix'].forEach(f=>document.getElementById(f).value='');
+  }
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function closeModalOutside(e,id){if(e.target===document.getElementById(id))closeModal(id);}
+
+// Achat mode toggle
+document.getElementById('achat_mode').addEventListener('change',function(){
+  document.getElementById('achat_paye_field').style.display=this.value==='partiel'?'block':'none';
+});
+document.getElementById('recuType').addEventListener('change',function(){
+  document.getElementById('recuPartielField').style.display=this.value==='partiel'?'block':'none';
+});
+
+// =================== CLIENTS ===================
+function saveClient(){
+  const nom=document.getElementById('nc_nom').value.trim();
+  if(!nom){alert('Le nom est obligatoire.');return;}
+  DB.clients.push({
+    id:genId(),nom,tel:document.getElementById('nc_tel').value.trim(),
+    service:document.getElementById('nc_service').value.trim(),
+    derniere:document.getElementById('nc_derniere').value,
+    note:document.getElementById('nc_note').value.trim(),
+    achats:[],credit:0,createdAt:todayISO()
+  });
+  save();closeModal('modalNouveauClient');renderClients();renderAccueil();
+}
+
+function renderClients(){
+  const q=(document.getElementById('searchClient').value||'').toLowerCase();
+  const list=DB.clients.filter(c=>c.nom.toLowerCase().includes(q));
+  const el=document.getElementById('clientsList');
+  if(!list.length){
+    el.innerHTML=`<div class="empty"><div class="empty-icon">💄</div><div class="empty-text">${q?'Aucun résultat':'Aucun client enregistré'}</div></div>`;
+    return;
+  }
+  el.innerHTML=list.sort((a,b)=>a.nom.localeCompare(b.nom)).map(c=>{
+    const credit=c.credit||0;
+    return `<div class="client-item" onclick="openFiche('${c.id}')">
+      <div class="client-avatar">${initials(c.nom)}</div>
+      <div class="client-info">
+        <div class="client-name">${c.nom}</div>
+        <div class="client-sub">${c.service||'—'} · ${c.tel||'—'}</div>
+      </div>
+      <div class="client-right">
+        ${credit>0?`<span class="credit-tag">💸 ${fmtFCFA(credit)}</span>`:
+        `<span class="alert-badge badge-ok" style="font-size:10px;">OK</span>`}
+        <div style="font-size:10px;color:var(--text3);margin-top:4px;">${c.achats.length} achat(s)</div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('clientsSuggest').innerHTML=DB.clients.map(c=>`<option value="${c.nom}">`).join('');
+}
+
+function openFiche(id){
+  const c=DB.clients.find(x=>x.id===id);if(!c)return;
+  document.getElementById('clientsListView').style.display='none';
+  document.getElementById('ficheView').style.display='block';
+  const credit=c.credit||0;
+  const days=daysDiff(c.derniere);
+  let badge='badge-ok',badgeTxt='Actif';
+  if(days>30&&days<60){badge='badge-warn';badgeTxt='À relancer';}
+  else if(days>=60){badge='badge-danger';badgeTxt='Inactif';}
+  const achatsHtml=c.achats.length?c.achats.slice().reverse().map(a=>`
+    <div class="visite-item">
+      <div class="visite-dot"></div>
+      <span class="visite-date">${fmtDate(a.date)}</span>
+      <span class="visite-service">${a.produit||'—'}${a.mode==='credit'?' 🔴':a.mode==='partiel'?' 🟡':''}</span>
+      <span class="visite-montant">${a.montant?fmtFCFA(a.montant):''}</span>
+    </div>`).join(''):`<div style="font-size:12px;color:var(--text3);padding:8px 0;">Aucun achat enregistré</div>`;
+
+  document.getElementById('ficheContent').innerHTML=`
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+      <div class="client-avatar" style="width:50px;height:50px;font-size:18px;">${initials(c.nom)}</div>
+      <div>
+        <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--text);">${c.nom}</div>
+        <span class="alert-badge ${badge}" style="margin-top:4px;display:inline-block;">${badgeTxt}</span>
+        ${credit>0?`<span class="credit-tag" style="margin-left:6px;">💸 ${fmtFCFA(credit)} dû</span>`:''}
+      </div>
+    </div>
+    <div class="card">
+      <div class="fiche-label">Informations</div>
+      <div class="info-row"><span class="info-key">Téléphone</span><span class="info-val">${c.tel||'—'}</span></div>
+      <div class="info-row"><span class="info-key">Produit favori</span><span class="info-val">${c.service||'—'}</span></div>
+      <div class="info-row"><span class="info-key">Dernière visite</span><span class="info-val">${fmtDate(c.derniere)} (${days}j)</span></div>
+      <div class="info-row"><span class="info-key">Crédit dû</span><span class="info-val" style="color:${credit>0?'var(--danger)':'var(--success)'};">${fmtFCFA(credit)}</span></div>
+    </div>
+    <div style="display:flex;gap:7px;margin-bottom:10px;flex-wrap:wrap;">
+      <button class="btn btn-primary btn-sm" style="flex:1;" onclick="openAchatModal('${c.id}')">+ Achat</button>
+      <button class="btn btn-ghost btn-sm" style="flex:1;" onclick="openEditClient('${c.id}')">✏️ Modifier</button>
+      ${c.tel?`<a href="https://wa.me/${fmtWATel(c.tel)}" target="_blank" class="btn btn-ghost btn-sm" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">WA</a>`:''}
+    </div>
+    ${credit>0?`<div style="display:flex;gap:7px;margin-bottom:10px;">
+      <button class="btn btn-green btn-sm" style="flex:1;" onclick="openRemboursement('${c.id}')">💰 Remboursement reçu</button>
+      ${c.tel?`<button class="btn btn-danger btn-sm" style="flex:1;" onclick="openRelanceCreditModal('${c.id}')">💬 Relancer</button>`:''}
+    </div>`:''}
+    ${c.tel&&days>=30?`<div style="margin-bottom:10px;"><button class="btn btn-ghost" style="border-color:var(--mauve);color:var(--mauve);" onclick="openRelanceModal('${c.id}')">💬 Message de relance</button></div>`:''}
+    <button class="btn btn-danger" style="margin-bottom:14px;" onclick="deleteClient('${c.id}')">Supprimer le client</button>
+    <div class="card">
+      <div class="fiche-label">Historique achats (${c.achats.length})</div>
+      ${achatsHtml}
+    </div>`;
+}
+function closeFiche(){
+  document.getElementById('clientsListView').style.display='block';
+  document.getElementById('ficheView').style.display='none';
+  renderClients();
+}
+function openAchatModal(id){
+  document.getElementById('achat_clientId').value=id;
+  openModal('modalNouvelAchat');
+}
+function saveAchat(){
+  const id=document.getElementById('achat_clientId').value;
+  const c=DB.clients.find(x=>x.id===id);if(!c)return;
+  const montant=Number(document.getElementById('achat_montant').value)||0;
+  const mode=document.getElementById('achat_mode').value;
+  const paye=mode==='partiel'?Number(document.getElementById('achat_paye').value)||0:mode==='comptant'?montant:0;
+  const reste=montant-paye;
+  c.achats.push({
+    date:document.getElementById('achat_date').value,
+    produit:document.getElementById('achat_produit').value.trim(),
+    montant,mode,paye,reste
+  });
+  c.derniere=document.getElementById('achat_date').value;
+  c.credit=(c.credit||0)+reste;
+  save();closeModal('modalNouvelAchat');openFiche(id);renderAccueil();renderCredits();
+}
+function openEditClient(id){
+  const c=DB.clients.find(x=>x.id===id);if(!c)return;
+  document.getElementById('edit_clientId').value=id;
+  document.getElementById('edit_nom').value=c.nom||'';
+  document.getElementById('edit_tel').value=c.tel||'';
+  document.getElementById('edit_service').value=c.service||'';
+  document.getElementById('edit_derniere').value=c.derniere||'';
+  document.getElementById('edit_note').value=c.note||'';
+  openModal('modalEditClient');
+}
+function saveEditClient(){
+  const id=document.getElementById('edit_clientId').value;
+  const c=DB.clients.find(x=>x.id===id);if(!c)return;
+  const nom=document.getElementById('edit_nom').value.trim();
+  if(!nom){alert('Nom obligatoire.');return;}
+  c.nom=nom;c.tel=document.getElementById('edit_tel').value.trim();
+  c.service=document.getElementById('edit_service').value.trim();
+  c.derniere=document.getElementById('edit_derniere').value;
+  c.note=document.getElementById('edit_note').value.trim();
+  save();closeModal('modalEditClient');openFiche(id);renderClients();
+}
+function deleteClient(id){
+  document.getElementById('confirm_deleteId').value=id;
+  document.getElementById('confirm_type').value='client';
+  document.getElementById('confirm_msg').textContent='Supprimer ce client ? Tout son historique et ses crédits seront perdus.';
+  openModal('modalConfirm');
+}
+function confirmDelete(){
+  const id=document.getElementById('confirm_deleteId').value;
+  const type=document.getElementById('confirm_type').value;
+  if(type==='client'){DB.clients=DB.clients.filter(c=>c.id!==id);save();closeModal('modalConfirm');closeFiche();renderAccueil();}
+  else if(type==='produit'){DB.produits=DB.produits.filter(p=>p.id!==id);save();closeModal('modalConfirm');renderStock();renderAccueil();}
+}
+
+// =================== REMBOURSEMENT ===================
+function openRemboursement(id){
+  const c=DB.clients.find(x=>x.id===id);if(!c)return;
+  document.getElementById('remb_clientId').value=id;
+  document.getElementById('remb_info').textContent=`${c.nom} doit ${fmtFCFA(c.credit||0)}`;
+  document.getElementById('remb_montant').value='';
+  openModal('modalRemboursement');
+}
+function saveRemboursement(){
+  const id=document.getElementById('remb_clientId').value;
+  const c=DB.clients.find(x=>x.id===id);if(!c)return;
+  const montant=Number(document.getElementById('remb_montant').value)||0;
+  c.credit=Math.max(0,(c.credit||0)-montant);
+  c.achats.push({date:todayISO(),produit:'Remboursement',montant:-montant,mode:'remb',paye:montant,reste:0});
+  save();closeModal('modalRemboursement');openFiche(id);renderCredits();renderAccueil();
+}
+
+// =================== STOCK ===================
+function saveProduit(){
+  const nom=document.getElementById('prod_nom').value.trim();
+  if(!nom){alert('Nom obligatoire.');return;}
+  DB.produits.push({
+    id:genId(),nom,cat:document.getElementById('prod_cat').value.trim(),
+    qty:Number(document.getElementById('prod_qty').value)||0,
+    seuil:Number(document.getElementById('prod_seuil').value)||3,
+    prix:Number(document.getElementById('prod_prix').value)||0
+  });
+  save();closeModal('modalNouveauProduit');renderStock();renderAccueil();
+}
+function renderStock(){
+  const q=(document.getElementById('searchProduit').value||'').toLowerCase();
+  const list=DB.produits.filter(p=>p.nom.toLowerCase().includes(q));
+  const el=document.getElementById('stockList');
+  if(!list.length){
+    el.innerHTML=`<div class="empty"><div class="empty-icon">📦</div><div class="empty-text">${q?'Aucun résultat':'Aucun produit enregistré'}</div></div>`;
+    return;
+  }
+  el.innerHTML=`<div class="card">`+list.sort((a,b)=>a.nom.localeCompare(b.nom)).map(p=>{
+    const low=p.qty<=p.seuil;const zero=p.qty===0;
+    return `<div class="stock-item">
+      <div class="stock-icon">${zero?'❌':low?'⚠️':'✅'}</div>
+      <div class="stock-info">
+        <div class="stock-name">${p.nom}</div>
+        <div class="stock-cat">${p.cat||'—'} · ${fmtFCFA(p.prix)}</div>
+      </div>
+      <div class="stock-right">
+        <div class="stock-qty ${zero?'low':low?'low':'ok'}">${p.qty}</div>
+        <div class="stock-prix">seuil: ${p.seuil}</div>
+      </div>
+      <button class="btn btn-ghost btn-sm" style="margin-left:8px;" onclick="openEditProduit('${p.id}')">✏️</button>
+    </div>`;
+  }).join('')+`</div>`;
+}
+function openEditProduit(id){
+  const p=DB.produits.find(x=>x.id===id);if(!p)return;
+  document.getElementById('editprod_id').value=id;
+  document.getElementById('editprod_nom').value=p.nom;
+  document.getElementById('editprod_cat').value=p.cat||'';
+  document.getElementById('editprod_qty').value=p.qty;
+  document.getElementById('editprod_seuil').value=p.seuil;
+  document.getElementById('editprod_prix').value=p.prix;
+  openModal('modalEditProduit');
+}
+function saveEditProduit(){
+  const id=document.getElementById('editprod_id').value;
+  const p=DB.produits.find(x=>x.id===id);if(!p)return;
+  p.nom=document.getElementById('editprod_nom').value.trim();
+  p.cat=document.getElementById('editprod_cat').value.trim();
+  p.qty=Number(document.getElementById('editprod_qty').value)||0;
+  p.seuil=Number(document.getElementById('editprod_seuil').value)||3;
+  p.prix=Number(document.getElementById('editprod_prix').value)||0;
+  save();closeModal('modalEditProduit');renderStock();renderAccueil();
+}
+
+// =================== CRÉDITS ===================
+function renderCredits(){
+  const debiteurs=DB.clients.filter(c=>(c.credit||0)>0).sort((a,b)=>(b.credit||0)-(a.credit||0));
+  const total=debiteurs.reduce((s,c)=>s+(c.credit||0),0);
+  document.getElementById('totalCreditsDisplay').textContent=fmtFCFA(total);
+  const el=document.getElementById('creditsList');
+  if(!debiteurs.length){
+    el.innerHTML=`<div class="empty"><div class="empty-icon">✅</div><div class="empty-text">Aucun crédit en cours.<br/>Toutes les dettes sont réglées !</div></div>`;
+    return;
+  }
+  el.innerHTML=debiteurs.map(c=>`
+    <div class="card" style="padding:12px;">
+      <div class="credit-item" style="padding:0;border:none;">
+        <div class="client-avatar">${initials(c.nom)}</div>
+        <div class="client-info">
+          <div class="client-name">${c.nom}</div>
+          <div class="client-sub">${c.tel||'Pas de numéro'} · depuis ${fmtDate(c.derniere)}</div>
+        </div>
+        <div class="credit-montant">${fmtFCFA(c.credit)}</div>
+      </div>
+      <div style="display:flex;gap:7px;margin-top:10px;">
+        <button class="btn btn-primary btn-sm" style="flex:1;" onclick="openRemboursement('${c.id}')">💰 Remboursement</button>
+        ${c.tel?`<button class="btn btn-danger btn-sm" style="flex:1;" onclick="openRelanceCreditModal('${c.id}')">💬 Relancer</button>`:''}
+      </div>
+    </div>`).join('');
+}
+
+// =================== RELANCE ===================
+function openRelanceModal(id){
+  const c=DB.clients.find(x=>x.id===id);if(!c)return;
+  const days=daysDiff(c.derniere);
+  const prenom=c.nom.split(' ')[0];
+  const boutique=DB.salonName||'notre boutique';
+  const produit=c.service?` Ton ${c.service.toLowerCase()} favori est disponible !`:'';
+  let msg;
+  if(days>=60)msg=`Bonjour ${prenom} 😊\n\nCa fait un moment qu'on ne t'a pas vue chez ${boutique} et tu nous manques !${produit}\n\nViens nous voir, on a plein de nouveautés pour toi 💄`;
+  else msg=`Bonjour ${prenom} 😊\n\nOn pensait à toi chez ${boutique} !${produit}\n\nPasse nous voir bientôt 💜`;
+  document.getElementById('relance_clientId').value=id;
+  document.getElementById('relance_nom').textContent=c.nom;
+  document.getElementById('relance_tel').textContent=c.tel||'(pas de numéro)';
+  document.getElementById('relance_message').value=msg;
+  openModal('modalRelance');
+}
+function envoyerRelanceWA(){
+  const id=document.getElementById('relance_clientId').value;
+  const c=DB.clients.find(x=>x.id===id);if(!c||!c.tel){alert('Pas de numéro.');return;}
+  const msg=document.getElementById('relance_message').value;
+  window.open('https://wa.me/'+fmtWATel(c.tel)+'?text='+encodeURIComponent(msg),'_blank');
+  closeModal('modalRelance');
+}
+function copierRelance(){
+  const msg=document.getElementById('relance_message').value;
+  if(navigator.clipboard){navigator.clipboard.writeText(msg).then(()=>{
+    const btn=document.getElementById('btnCopier');
+    btn.textContent='✓ Copié !';
+    setTimeout(()=>btn.textContent='📋 Copier le message',2000);
+  });}
+}
+function openRelanceCreditModal(id){
+  const c=DB.clients.find(x=>x.id===id);if(!c)return;
+  const prenom=c.nom.split(' ')[0];
+  const boutique=DB.salonName||'la boutique';
+  const msg=`Bonjour ${prenom} 😊\n\nOn espère que tu vas bien ! On te rappelle gentiment que tu as un solde de ${fmtFCFA(c.credit||0)} à régler chez ${boutique}.\n\nTu peux passer quand tu veux pour régulariser. Merci et à bientôt 💜`;
+  document.getElementById('relcredit_clientId').value=id;
+  document.getElementById('relcredit_nom').textContent=c.nom;
+  document.getElementById('relcredit_montant').textContent=`Doit : ${fmtFCFA(c.credit||0)}`;
+  document.getElementById('relcredit_message').value=msg;
+  openModal('modalRelanceCredit');
+}
+function envoyerRelanceCreditWA(){
+  const id=document.getElementById('relcredit_clientId').value;
+  const c=DB.clients.find(x=>x.id===id);if(!c||!c.tel){alert('Pas de numéro.');return;}
+  const msg=document.getElementById('relcredit_message').value;
+  window.open('https://wa.me/'+fmtWATel(c.tel)+'?text='+encodeURIComponent(msg),'_blank');
+  closeModal('modalRelanceCredit');
+}
+
+// =================== REÇUS ===================
+let lignes=[{description:'',quantite:1,prix:''}];
+let lastRecuData={};
+let recuClientActuel='';
+
+function initRecuForm(){
+  renderLignes();
+  document.getElementById('clientsSuggest').innerHTML=DB.clients.map(c=>`<option value="${c.nom}">`).join('');
+  if(recuClientActuel) document.getElementById('recuClient').value=recuClientActuel;
+}
+function addLigne(){lignes.push({description:'',quantite:1,prix:''});renderLignes();}
+function removeLigne(i){if(lignes.length>1){lignes.splice(i,1);renderLignes();}}
+function updateLigne(i,k,v){lignes[i][k]=v;updateTotal();}
+function updateTotal(){
+  const t=lignes.reduce((s,l)=>s+(Number(l.quantite)||1)*(Number(l.prix)||0),0);
+  document.getElementById('totalDisplay').textContent=fmtFCFA(t);
+}
+function renderLignes(){
+  document.getElementById('lignesContainer').innerHTML=lignes.map((l,i)=>`
+    <div class="ligne-row">
+      <input placeholder="Produit..." value="${l.description}" oninput="updateLigne(${i},'description',this.value)"/>
+      <input inputmode="numeric" pattern="[0-9]*" value="${l.quantite||1}" oninput="updateLigne(${i},'quantite',this.value)" style="text-align:center;"/>
+      <input inputmode="numeric" pattern="[0-9]*" value="${l.prix||''}" oninput="updateLigne(${i},'prix',this.value)" placeholder="Prix" style="text-align:right;"/>
+      ${lignes.length>1?`<button class="remove-btn" onclick="removeLigne(${i})">×</button>`:'<span style="width:28px;"></span>'}
+    </div>`).join('');
+  updateTotal();
+}
+function genererRecu(){
+  const client=document.getElementById('recuClient').value.trim()||'Client';
+  const note=document.getElementById('recuNote').value.trim();
+  const type=document.getElementById('recuType').value;
+  const total=lignes.reduce((s,l)=>s+(Number(l.quantite)||1)*(Number(l.prix)||0),0);
+  const paye=type==='comptant'?total:type==='partiel'?Number(document.getElementById('recuPaye').value)||0:0;
+  const reste=total-paye;
+  const boutique=DB.salonName||'Ma Boutique';
+  const numero=genNumero();
+  const date=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+  lastRecuData={client,note,type,total,paye,reste,boutique,numero,date,lignes:[...lignes]};
+  const typeLabel={comptant:'Payé comptant',credit:'À crédit',partiel:'Paiement partiel'}[type];
+  const lignesHtml=lignes.filter(l=>l.description).map(l=>`
+    <div class="rp-ligne">
+      <span class="rp-desc">${l.description}</span>
+      <span class="rp-qty">${l.quantite||1}</span>
+      <span class="rp-prix">${fmtFCFA((Number(l.quantite)||1)*(Number(l.prix)||0))}</span>
+    </div>`).join('');
+  document.getElementById('recuOutput').innerHTML=`
+    <div class="rp-head">
+      <div class="rp-head-top">
+        <div class="rp-logo"><div class="rp-logo-mark">S</div><span class="rp-logo-name">Suivo</span></div>
+        <span class="rp-badge">Reçu</span>
+      </div>
+      <div class="rp-biz">${boutique}</div>
+      <div class="rp-sector">💄 Cosmétiques</div>
+    </div>
+    <div class="rp-meta">
+      <div><div class="rp-meta-lbl">N° Reçu</div><div class="rp-meta-val">${numero}</div></div>
+      <div><div class="rp-meta-lbl">Date</div><div class="rp-meta-val">${date}</div></div>
+      <div><div class="rp-meta-lbl">Client</div><div class="rp-meta-val">${client}</div></div>
+      <div><div class="rp-meta-lbl">Paiement</div><div class="rp-meta-val">${typeLabel}</div></div>
+    </div>
+    <div class="rp-body">
+      <div class="rp-th"><span>Désignation</span><span>Qté</span><span>Montant</span></div>
+      ${lignesHtml}
+    </div>
+    <div class="rp-total"><span class="rp-total-lbl">Total</span><span class="rp-total-val">${fmtFCFA(total)}</span></div>
+    ${type!=='comptant'?`<div style="display:flex;justify-content:space-between;padding:10px 18px;background:var(--danger-bg);"><span style="font-size:11px;color:var(--danger);">Reste à payer</span><span style="font-size:14px;font-weight:700;color:var(--danger);">${fmtFCFA(reste)}</span></div>`:''}
+    ${note?`<div class="rp-note">${note}</div>`:''}
+    <div class="rp-footer"><div class="rp-merci">Merci pour votre confiance 🙏</div><div class="rp-powered">Reçu généré par Suivo · suivo.africa</div></div>`;
+  // Auto-update client credit if credit/partiel
+  if(type!=='comptant'){
+    const c=DB.clients.find(x=>x.nom.toLowerCase()===client.toLowerCase());
+    if(c){c.credit=(c.credit||0)+reste;c.derniere=todayISO();save();}
+  }
+  recuClientActuel=client;
+  document.getElementById('recuFormView').style.display='none';
+  document.getElementById('recuPreviewView').style.display='block';
+}
+function envoyerRecuWA(){
+  const d=lastRecuData;if(!d.client)return;
+  const c=DB.clients.find(x=>x.nom.toLowerCase()===d.client.toLowerCase());
+  const tel=c&&c.tel?c.tel:null;
+  const lignesText=d.lignes.filter(l=>l.description).map(l=>`• ${l.description} x${l.quantite||1}  →  ${fmtFCFA((Number(l.quantite)||1)*(Number(l.prix)||0))}`).join('\n');
+  const sep='──────────────────';
+  let msg=`💄 REÇU — ${d.boutique}\n${sep}\nCliente : ${d.client}\nDate : ${d.date}\nN° : ${d.numero}\n${sep}\n${lignesText}\n${sep}\n💜 TOTAL : ${fmtFCFA(d.total)}`;
+  if(d.type!=='comptant') msg+=`\nReste à payer : ${fmtFCFA(d.reste)}`;
+  msg+=`\n${sep}\n${d.note?d.note+'\n':''}Merci pour votre confiance ! 🙏\nSuivo · suivo.africa`;
+  if(tel) window.open('https://wa.me/'+fmtWATel(tel)+'?text='+encodeURIComponent(msg),'_blank');
+  else window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+}
+function nouveauRecu(){
+  lignes=[{description:'',quantite:1,prix:''}];recuClientActuel='';
+  document.getElementById('recuClient').value='';
+  document.getElementById('recuNote').value='';
+  document.getElementById('recuType').value='comptant';
+  document.getElementById('recuPartielField').style.display='none';
+  document.getElementById('recuFormView').style.display='block';
+  document.getElementById('recuPreviewView').style.display='none';
+  renderLignes();
+}
+function nouveauRecuMemeClient(){
+  lignes=[{description:'',quantite:1,prix:''}];
+  document.getElementById('recuNote').value='';
+  document.getElementById('recuFormView').style.display='block';
+  document.getElementById('recuPreviewView').style.display='none';
+  renderLignes();
+}
+
+// =================== SETTINGS ===================
+function saveSettings(){
+  const nom=document.getElementById('set_nom').value.trim();
+  if(!nom){alert('Nom obligatoire.');return;}
+  DB.salonName=nom;DB.salonTel=document.getElementById('set_tel').value.trim();
+  DB.salonProprio=document.getElementById('set_proprio').value.trim();
+  save();
+  document.getElementById('boutiqueNameDisplay').textContent=nom;
+  closeModal('modalSettings');
+}
+function loadSettings(){
+  document.getElementById('set_nom').value=DB.salonName||'';
+  document.getElementById('set_tel').value=DB.salonTel||'';
+  document.getElementById('set_proprio').value=DB.salonProprio||'';
+}
+document.querySelector('button[onclick="openModal(\'modalSettings\')"]').addEventListener('click',loadSettings);
+function checkFirstLaunch(){
+  if(!DB.salonName||DB.salonName==='Ma Boutique'){
+    setTimeout(()=>{loadSettings();openModal('modalSettings');},400);
+  }
+}
+
+// =================== ACCUEIL ===================
+function renderAccueil(){
+  document.getElementById('statClients').textContent=DB.clients.length;
+  const debiteurs=DB.clients.filter(c=>(c.credit||0)>0);
+  document.getElementById('statCredits').textContent=debiteurs.length;
+  const total=debiteurs.reduce((s,c)=>s+(c.credit||0),0);
+  document.getElementById('statDette').textContent=total>9999?Math.round(total/1000)+'k':total;
+  const stockFaible=DB.produits.filter(p=>p.qty<=p.seuil);
+  document.getElementById('statStockFaible').textContent=stockFaible.length;
+  // Credits list
+  const credEl=document.getElementById('accueilCreditsList');
+  if(debiteurs.length){
+    credEl.innerHTML=debiteurs.sort((a,b)=>(b.credit||0)-(a.credit||0)).slice(0,5).map(c=>`
+      <div class="alert-item">
+        <div class="alert-avatar">${initials(c.nom)}</div>
+        <div class="alert-info">
+          <div class="alert-name">${c.nom}</div>
+          <div class="alert-days">${c.tel||'Pas de numéro'}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;">
+          <span style="font-family:'DM Serif Display',serif;font-size:15px;color:var(--danger);">${fmtFCFA(c.credit)}</span>
+          ${c.tel?`<button class="btn btn-danger btn-sm" onclick="openRelanceCreditModal('${c.id}')">Relancer</button>`:''}
+        </div>
+      </div>`).join('');
+  } else {
+    credEl.innerHTML=`<div class="empty"><div class="empty-icon">✅</div><div class="empty-text">Aucun crédit en cours</div></div>`;
+  }
+  // Stock faible
+  const stockEl=document.getElementById('accueilStockList');
+  if(stockFaible.length){
+    stockEl.innerHTML=stockFaible.map(p=>`
+      <div class="alert-item">
+        <div class="alert-avatar" style="border-radius:10px;">${p.qty===0?'❌':'⚠️'}</div>
+        <div class="alert-info">
+          <div class="alert-name">${p.nom}</div>
+          <div class="alert-days">${p.cat||'—'} · seuil: ${p.seuil}</div>
+        </div>
+        <span class="alert-badge ${p.qty===0?'badge-danger':'badge-warn'}">${p.qty===0?'Rupture':p.qty+' restant(s)'}</span>
+      </div>`).join('');
+  } else {
+    stockEl.innerHTML=`<div class="empty"><div class="empty-icon">📦</div><div class="empty-text">Tous les produits sont bien stockés</div></div>`;
+  }
+}
+
+// =================== INIT ===================
+renderAccueil();
+renderClients();
+renderStock();
+renderCredits();
+initRecuForm();
+checkFirstLaunch();
+</script>
+</body>
+</html>
