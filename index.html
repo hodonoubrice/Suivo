@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Suivo — CRM Mobile pour Commerces Africains</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --mauve:#8c50ff;
+  --mauve2:#6020cc;
+  --mauve3:#3d0099;
+  --mauve-dim:rgba(140,80,255,0.1);
+  --mauve-mid:rgba(140,80,255,0.18);
+  --text:#1a0a3a;
+  --text2:#5a4080;
+  --text3:#9980c0;
+  --bg:#f7f5ff;
+  --white:#ffffff;
+  --border:rgba(140,80,255,0.13);
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+
+/* ── NAVBAR ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(255,255,255,0.9);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.nav-mark{
+  width:32px;height:32px;
+  background:linear-gradient(135deg,var(--mauve),var(--mauve2));
+  border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-family:'DM Serif Display',serif;font-size:15px;color:#fff;
+}
+.nav-name{font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);}
+.nav-cta{
+  background:linear-gradient(135deg,var(--mauve),var(--mauve2));
+  color:#fff;border:none;border-radius:20px;
+  padding:8px 18px;font-size:13px;font-weight:600;
+  font-family:'DM Sans',sans-serif;cursor:pointer;
+  text-decoration:none;display:inline-block;
+}
+
+/* ── HERO ── */
+.hero{
+  padding:100px 24px 60px;
+  text-align:center;
+  background:linear-gradient(180deg,#fff 0%,var(--bg) 100%);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(140,80,255,0.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-tag{
+  display:inline-block;
+  background:var(--mauve-dim);border:1px solid var(--border);
+  border-radius:20px;padding:6px 16px;
+  font-size:11px;font-weight:600;color:var(--mauve);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;
+}
+.hero h1{
+  font-family:'DM Serif Display',serif;
+  font-size:36px;line-height:1.2;color:var(--text);
+  margin-bottom:16px;
+}
+.hero h1 em{color:var(--mauve);font-style:normal;}
+.hero p{
+  font-size:15px;color:var(--text2);line-height:1.7;
+  max-width:320px;margin:0 auto 28px;
+}
+.hero-btns{display:flex;flex-direction:column;gap:10px;max-width:280px;margin:0 auto;}
+.btn-hero-primary{
+  background:linear-gradient(135deg,var(--mauve),var(--mauve2));
+  color:#fff;border:none;border-radius:14px;
+  padding:15px 24px;font-size:15px;font-weight:600;
+  font-family:'DM Sans',sans-serif;cursor:pointer;
+  box-shadow:0 6px 24px rgba(140,80,255,0.3);
+  text-decoration:none;display:block;text-align:center;
+}
+.btn-hero-ghost{
+  background:#fff;color:var(--mauve);
+  border:1.5px solid var(--border);border-radius:14px;
+  padding:14px 24px;font-size:15px;font-weight:600;
+  font-family:'DM Sans',sans-serif;cursor:pointer;
+  text-decoration:none;display:block;text-align:center;
+}
+
+/* ── SOCIAL PROOF ── */
+.proof-bar{
+  background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  padding:16px 24px;display:flex;justify-content:space-around;align-items:center;
+  text-align:center;
+}
+.proof-item{}
+.proof-val{font-family:'DM Serif Display',serif;font-size:22px;color:var(--mauve);}
+.proof-lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
+
+/* ── SECTION ── */
+section{padding:48px 20px;}
+.section-tag{
+  display:inline-block;background:var(--mauve-dim);border:1px solid var(--border);
+  border-radius:20px;padding:5px 14px;
+  font-size:10px;font-weight:600;color:var(--mauve);
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;
+}
+.section-title{
+  font-family:'DM Serif Display',serif;font-size:26px;
+  color:var(--text);margin-bottom:10px;line-height:1.25;
+}
+.section-title em{color:var(--mauve);font-style:normal;}
+.section-sub{font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:28px;}
+
+/* ── PROBLÈME ── */
+.problems{display:flex;flex-direction:column;gap:12px;margin-bottom:0;}
+.problem-item{
+  background:#fff;border:1px solid var(--border);border-radius:14px;
+  padding:16px;display:flex;align-items:flex-start;gap:14px;
+  box-shadow:0 2px 12px rgba(140,80,255,0.06);
+}
+.prob-icon{font-size:24px;flex-shrink:0;margin-top:2px;}
+.prob-text strong{display:block;font-size:14px;color:var(--text);margin-bottom:4px;}
+.prob-text span{font-size:12px;color:var(--text3);line-height:1.5;}
+
+/* ── PRODUITS ── */
+.products{display:flex;flex-direction:column;gap:16px;}
+.product-card{
+  background:#fff;border:1.5px solid var(--border);border-radius:20px;
+  overflow:hidden;box-shadow:0 4px 20px rgba(140,80,255,0.1);
+  transition:transform 0.15s;
+}
+.product-card:active{transform:scale(0.98);}
+.product-head{
+  padding:20px;
+  background:linear-gradient(135deg,var(--mauve),var(--mauve2));
+  color:#fff;
+}
+.product-icon{font-size:32px;margin-bottom:10px;}
+.product-name{font-family:'DM Serif Display',serif;font-size:22px;color:#fff;}
+.product-desc{font-size:12px;color:rgba(255,255,255,0.75);margin-top:4px;line-height:1.5;}
+.product-body{padding:18px;}
+.feature-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:18px;}
+.feature-list li{
+  display:flex;align-items:center;gap:10px;
+  font-size:13px;color:var(--text2);
+}
+.feature-list li::before{
+  content:'✓';width:20px;height:20px;
+  background:var(--mauve-dim);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;color:var(--mauve);
+  flex-shrink:0;
+}
+.product-cta{
+  display:block;text-align:center;
+  background:linear-gradient(135deg,var(--mauve),var(--mauve2));
+  color:#fff;border-radius:12px;padding:13px;
+  font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;
+  text-decoration:none;
+  box-shadow:0 4px 16px rgba(140,80,255,0.25);
+}
+.product-badge{
+  display:inline-block;background:rgba(255,255,255,0.2);
+  border:1px solid rgba(255,255,255,0.3);
+  border-radius:20px;padding:3px 10px;
+  font-size:10px;color:#fff;letter-spacing:0.5px;
+  margin-top:8px;
+}
+
+/* ── COMMENT ÇA MARCHE ── */
+.steps{display:flex;flex-direction:column;gap:0;}
+.step{
+  display:flex;gap:16px;align-items:flex-start;
+  padding:16px 0;border-bottom:1px solid var(--border);
+}
+.step:last-child{border-bottom:none;}
+.step-num{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--mauve),var(--mauve2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Serif Display',serif;font-size:16px;color:#fff;
+  flex-shrink:0;
+}
+.step-content strong{display:block;font-size:14px;color:var(--text);margin-bottom:4px;}
+.step-content span{font-size:12px;color:var(--text3);line-height:1.5;}
+
+/* ── TÉMOIGNAGE ── */
+.testimonials{display:flex;flex-direction:column;gap:14px;}
+.testi{
+  background:#fff;border:1px solid var(--border);border-radius:16px;
+  padding:18px;box-shadow:0 2px 12px rgba(140,80,255,0.07);
+}
+.testi-text{font-size:14px;color:var(--text2);line-height:1.7;font-style:italic;margin-bottom:14px;}
+.testi-author{display:flex;align-items:center;gap:10px;}
+.testi-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--mauve),var(--mauve2));
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.testi-name{font-size:13px;font-weight:600;color:var(--text);}
+.testi-role{font-size:11px;color:var(--text3);}
+.stars{color:#f59e0b;font-size:12px;margin-bottom:10px;}
+
+/* ── FAQ ── */
+.faq{display:flex;flex-direction:column;gap:10px;}
+.faq-item{
+  background:#fff;border:1px solid var(--border);border-radius:14px;
+  overflow:hidden;box-shadow:0 2px 8px rgba(140,80,255,0.05);
+}
+.faq-q{
+  padding:16px;font-size:14px;font-weight:600;color:var(--text);
+  display:flex;justify-content:space-between;align-items:center;
+  cursor:pointer;
+}
+.faq-q .arrow{color:var(--mauve);transition:transform 0.2s;font-size:16px;}
+.faq-item.open .arrow{transform:rotate(180deg);}
+.faq-a{
+  display:none;padding:0 16px 16px;
+  font-size:13px;color:var(--text2);line-height:1.7;
+}
+.faq-item.open .faq-a{display:block;}
+
+/* ── CTA FINAL ── */
+.cta-section{
+  background:linear-gradient(135deg,var(--mauve),var(--mauve3));
+  padding:48px 24px;text-align:center;
+}
+.cta-section h2{
+  font-family:'DM Serif Display',serif;font-size:28px;color:#fff;
+  margin-bottom:12px;line-height:1.3;
+}
+.cta-section p{font-size:14px;color:rgba(255,255,255,0.75);margin-bottom:28px;line-height:1.6;}
+.cta-products{display:flex;flex-direction:column;gap:10px;max-width:300px;margin:0 auto;}
+.cta-btn{
+  display:block;text-align:center;
+  background:rgba(255,255,255,0.15);
+  border:1.5px solid rgba(255,255,255,0.3);
+  color:#fff;border-radius:12px;padding:14px;
+  font-size:14px;font-weight:600;font-family:'DM Sans',sans-serif;
+  text-decoration:none;transition:background 0.15s;
+}
+.cta-btn:active{background:rgba(255,255,255,0.25);}
+.cta-btn-white{background:#fff;color:var(--mauve);border-color:transparent;box-shadow:0 4px 16px rgba(0,0,0,0.15);}
+
+/* ── FOOTER ── */
+footer{
+  background:#fff;border-top:1px solid var(--border);
+  padding:28px 24px;text-align:center;
+}
+.footer-logo{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;}
+.footer-text{font-size:12px;color:var(--text3);line-height:1.7;}
+.footer-powered{
+  margin-top:16px;font-size:11px;color:var(--text3);
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.footer-badge{
+  background:var(--mauve-dim);border-radius:4px;
+  padding:2px 8px;font-size:10px;font-weight:600;color:var(--mauve);
+}
+
+/* ── UTILS ── */
+.text-center{text-align:center;}
+.divider{height:1px;background:var(--border);margin:0;}
+.bg-white{background:#fff;}
+
+@media(min-width:600px){
+  .hero h1{font-size:44px;}
+  .hero-btns{flex-direction:row;max-width:none;justify-content:center;}
+  .products{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .proof-bar{padding:20px 40px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-mark">S</div>
+    <span class="nav-name">Suivo</span>
+  </div>
+  <a href="#produits" class="nav-cta">Voir les CRM</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">✦ CRM Mobile · Afrique Francophone</div>
+  <h1>Gère ton commerce<br/>depuis ton <em>téléphone</em></h1>
+  <p>Suivi clients, reçus, stock, crédits et relances WhatsApp. Tout en un seul outil — sans abonnement, sans ordi.</p>
+  <div class="hero-btns">
+    <a href="#produits" class="btn-hero-primary">Découvrir les outils →</a>
+    <a href="#comment" class="btn-hero-ghost">Comment ça marche</a>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<div class="proof-bar">
+  <div class="proof-item">
+    <div class="proof-val">3</div>
+    <div class="proof-lbl">Secteurs couverts</div>
+  </div>
+  <div class="proof-item">
+    <div class="proof-val">100%</div>
+    <div class="proof-lbl">Gratuit à l'usage</div>
+  </div>
+  <div class="proof-item">
+    <div class="proof-val">0</div>
+    <div class="proof-lbl">Inscription requise</div>
+  </div>
+</div>
+
+<!-- PROBLÈME -->
+<section style="background:#fff;">
+  <div class="section-tag">Le problème</div>
+  <h2 class="section-title">Tu perds de l'argent<br/>sans le savoir</h2>
+  <p class="section-sub">Sans outil de suivi, chaque jour tu laisses passer des opportunités.</p>
+  <div class="problems">
+    <div class="problem-item">
+      <div class="prob-icon">📒</div>
+      <div class="prob-text">
+        <strong>Le carnet papier se perd</strong>
+        <span>Les noms, numéros et dettes de tes clients disparaissent avec lui.</span>
+      </div>
+    </div>
+    <div class="problem-item">
+      <div class="prob-icon">💸</div>
+      <div class="prob-text">
+        <strong>Les crédits non suivis</strong>
+        <span>Tu donnes à crédit mais tu oublies. Des milliers de FCFA perdus chaque mois.</span>
+      </div>
+    </div>
+    <div class="problem-item">
+      <div class="prob-icon">😶</div>
+      <div class="prob-text">
+        <strong>Les clients qui partent sans revenir</strong>
+        <span>Tu sais pas qui n'est pas revenu depuis 30 jours. Tu ne relances personne.</span>
+      </div>
+    </div>
+    <div class="problem-item">
+      <div class="prob-icon">📦</div>
+      <div class="prob-text">
+        <strong>Les ruptures de stock surprise</strong>
+        <span>Tu découvres qu'il ne reste plus rien seulement quand une cliente te demande.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUITS -->
+<section id="produits">
+  <div class="section-tag">Les outils Suivo</div>
+  <h2 class="section-title">Un CRM pour<br/><em>chaque secteur</em></h2>
+  <p class="section-sub">Choisis le template adapté à ton activité. Ouvre le lien, bookmarke sur ton écran d'accueil, c'est prêt.</p>
+
+  <div class="products">
+
+    <!-- SALON -->
+    <div class="product-card">
+      <div class="product-head">
+        <div class="product-icon">✂️</div>
+        <div class="product-name">Suivo Salon</div>
+        <div class="product-desc">Pour les salons de coiffure et de beauté</div>
+        <div class="product-badge">Salon de beauté</div>
+      </div>
+      <div class="product-body">
+        <ul class="feature-list">
+          <li>Fiche cliente avec historique visites</li>
+          <li>Alerte clientes à relancer</li>
+          <li>Génération de reçus</li>
+          <li>Gestion des rendez-vous</li>
+          <li>Relance WhatsApp personnalisée</li>
+          <li>Envoi reçu direct sur WhatsApp</li>
+        </ul>
+        <a href="salon.html" class="product-cta">✂️ Ouvrir Suivo Salon →</a>
+      </div>
+    </div>
+
+    <!-- RESTAURANT -->
+    <div class="product-card">
+      <div class="product-head">
+        <div class="product-icon">🍽️</div>
+        <div class="product-name">Suivo Restau</div>
+        <div class="product-desc">Pour les restaurants et maquis</div>
+        <div class="product-badge">Restaurant</div>
+      </div>
+      <div class="product-body">
+        <ul class="feature-list">
+          <li>Fiche client avec historique commandes</li>
+          <li>Gestion des réservations</li>
+          <li>Génération de reçus</li>
+          <li>Alerte clients inactifs</li>
+          <li>Relance WhatsApp fidélisation</li>
+          <li>Envoi reçu direct sur WhatsApp</li>
+        </ul>
+        <a href="restaurant.html" class="product-cta">🍽️ Ouvrir Suivo Restau →</a>
+      </div>
+    </div>
+
+    <!-- COSMÉTIQUES -->
+    <div class="product-card" style="grid-column:1/-1;">
+      <div class="product-head" style="background:linear-gradient(135deg,#a050ff,#5010cc);">
+        <div class="product-icon">💄</div>
+        <div class="product-name">Suivo Cosmétiques</div>
+        <div class="product-desc">Pour les boutiques de cosmétiques et produits beauté</div>
+        <div class="product-badge">⭐ Le plus complet</div>
+      </div>
+      <div class="product-body">
+        <ul class="feature-list">
+          <li>Gestion clients + historique achats</li>
+          <li>Suivi des crédits et dettes clients</li>
+          <li>Gestion de stock avec alertes</li>
+          <li>Vente comptant, à crédit ou partielle</li>
+          <li>Relance crédit WhatsApp automatique</li>
+          <li>Reçus avec mention solde restant</li>
+        </ul>
+        <a href="cosmetiques.html" class="product-cta">💄 Ouvrir Suivo Cosmétiques →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- COMMENT ÇA MARCHE -->
+<section id="comment" class="bg-white">
+  <div class="section-tag">Mode d'emploi</div>
+  <h2 class="section-title">Prêt en <em>3 minutes</em></h2>
+  <p class="section-sub">Aucune inscription. Aucun téléchargement. Juste ton téléphone.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <strong>Choisis ton outil</strong>
+        <span>Salon, restaurant ou cosmétiques — clique sur le lien correspondant à ton activité.</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <strong>Personnalise avec ton nom</strong>
+        <span>Au premier lancement, entre le nom de ton commerce. L'app est immédiatement à ton image.</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <strong>Bookmarke sur ton écran d'accueil</strong>
+        <span>Sur Safari : bouton Partager → "Sur l'écran d'accueil". L'app s'ouvre comme une vraie application.</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <strong>Utilise au quotidien</strong>
+        <span>Tes données sont sauvegardées automatiquement sur ton téléphone. Rien à configurer.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TÉMOIGNAGES -->
+<section>
+  <div class="section-tag">Ils utilisent Suivo</div>
+  <h2 class="section-title">Ce qu'ils en <em>disent</em></h2>
+  <div class="testimonials">
+    <div class="testi">
+      <div class="stars">★★★★★</div>
+      <div class="testi-text">"Avant j'utilisais un carnet. Maintenant je vois direct qui doit me rembourser et j'envoie un message WhatsApp en un tap. J'ai récupéré 47 000 FCFA en une semaine."</div>
+      <div class="testi-author">
+        <div class="testi-avatar">AK</div>
+        <div>
+          <div class="testi-name">Adjoua K.</div>
+          <div class="testi-role">Boutique cosmétiques · Cotonou</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi">
+      <div class="stars">★★★★★</div>
+      <div class="testi-text">"Mes clientes adorent recevoir leur reçu directement sur WhatsApp. Ça fait sérieux et elles reviennent plus souvent depuis que je les relance."</div>
+      <div class="testi-author">
+        <div class="testi-avatar">GD</div>
+        <div>
+          <div class="testi-name">Grâce D.</div>
+          <div class="testi-role">Salon de coiffure · Abomey-Calavi</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi">
+      <div class="stars">★★★★★</div>
+      <div class="testi-text">"Simple, rapide, en français. Je gère mes réservations et mes reçus depuis mon téléphone. Mes clients sont impressionnés."</div>
+      <div class="testi-author">
+        <div class="testi-avatar">KM</div>
+        <div>
+          <div class="testi-name">Koffi M.</div>
+          <div class="testi-role">Restaurant · Porto-Novo</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="bg-white">
+  <div class="section-tag">Questions fréquentes</div>
+  <h2 class="section-title">Tu te poses<br/><em>des questions ?</em></h2>
+  <div class="faq">
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        C'est vraiment gratuit ? <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">Oui, totalement gratuit à l'utilisation. Pas d'abonnement, pas de frais cachés. Tu ouvres le lien, tu l'utilises.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Mes données sont stockées où ? <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">Directement sur ton téléphone, dans ton navigateur. Personne d'autre n'y a accès. Tant que tu ne vides pas le cache de ton navigateur, tes données sont là.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Ça marche sans internet ? <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">Oui ! Une fois chargé, l'outil fonctionne même sans connexion. Idéal pour les zones avec réseau instable.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Comment bookmarker sur mon téléphone ? <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">Sur iPhone Safari : appuie sur l'icône Partager (carré avec flèche) → "Sur l'écran d'accueil". Sur Android Chrome : menu (3 points) → "Ajouter à l'écran d'accueil".</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Puis-je utiliser plusieurs appareils ? <span class="arrow">▼</span>
+      </div>
+      <div class="faq-a">Les données sont propres à chaque appareil. Si tu changes de téléphone, tes données ne se transfèrent pas automatiquement. Note tes infos importantes avant de changer d'appareil.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section">
+  <h2>Commence<br/>aujourd'hui 💜</h2>
+  <p>Choisis ton outil, bookmarke sur ton écran d'accueil et commence à suivre tes clients en 3 minutes.</p>
+  <div class="cta-products">
+    <a href="salon.html" class="cta-btn">✂️ Suivo Salon</a>
+    <a href="restaurant.html" class="cta-btn">🍽️ Suivo Restau</a>
+    <a href="cosmetiques.html" class="cta-btn cta-btn-white">💄 Suivo Cosmétiques</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <div class="nav-mark">S</div>
+    <span style="font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);">Suivo</span>
+  </div>
+  <div class="footer-text">
+    CRM mobile pour commerces francophones en Afrique de l'Ouest.<br/>
+    Conçu pour fonctionner sur iPhone et Android.
+  </div>
+  <div class="footer-powered">
+    <span>Propulsé par</span>
+    <span class="footer-badge">Brice Digitz</span>
+  </div>
+</footer>
+
+<script>
+function toggleFaq(el){
+  const item = el.parentElement;
+  item.classList.toggle('open');
+}
+</script>
+</body>
+</html>
