@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"/>
+<title>Suivo — Salon</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#f7f5ff;
+  --bg2:#ffffff;
+  --bg3:#ede8ff;
+  --card:#ffffff;
+  --border:rgba(140,80,255,0.13);
+  --mauve:#8c50ff;
+  --mauve2:#6020cc;
+  --mauve-dim:rgba(140,80,255,0.1);
+  --text:#1a0a3a;
+  --text2:#5a4080;
+  --text3:#9980c0;
+  --danger:#e53935;
+  --success:#00a86b;
+  --warn:#f59e0b;
+}
+html,body{height:100%;height:100dvh;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden;}
+
+/* APP SHELL */
+.app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:480px;margin:0 auto;position:relative;}
+
+/* HEADER */
+.top-bar{
+  padding:18px 20px 12px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--border);
+  background:#fff;
+  flex-shrink:0;
+  box-shadow:0 2px 12px rgba(140,80,255,0.08);
+}
+.logo-mark{
+  width:34px;height:34px;
+  background:linear-gradient(135deg,var(--mauve),var(--mauve2));
+  border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Serif Display',serif;font-size:16px;color:#fff;
+  flex-shrink:0;
+}
+.logo-text{font-family:'DM Serif Display',serif;font-size:18px;color:var(--text);}
+.salon-name{
+  margin-left:auto;font-size:11px;color:var(--text3);
+  letter-spacing:0.5px;text-align:right;line-height:1.3;
+}
+.salon-name strong{display:block;color:var(--text2);font-size:12px;}
+
+/* TAB NAV */
+.tab-nav{
+  display:flex;
+  background:#fff;
+  border-top:2px solid var(--border);
+  flex-shrink:0;
+  order:10;
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  box-shadow:0 -2px 12px rgba(140,80,255,0.08);
+}
+.tab-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:10px 4px 12px;
+  border:none;background:none;color:var(--text3);
+  font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:0.5px;
+  text-transform:uppercase;cursor:pointer;transition:all 0.15s;
+  gap:4px;
+}
+.tab-btn .icon{font-size:18px;line-height:1;}
+.tab-btn.active{color:var(--mauve);}
+.tab-btn.active .tab-indicator{width:20px;height:2px;background:var(--mauve);border-radius:2px;margin-top:2px;}
+.tab-indicator{width:20px;height:2px;background:transparent;border-radius:2px;margin-top:2px;}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--bg);}
+.tab-pane{display:none;padding:14px 14px 24px;background:var(--bg);}
+.tab-pane.active{display:block;}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:0 2px 12px rgba(140,80,255,0.07);}
+.card-title{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mauve);margin-bottom:12px;}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.stat-card{
+  background:#fff;border:1px solid var(--border);border-radius:14px;
+  padding:14px;display:flex;flex-direction:column;gap:4px;
+  box-shadow:0 2px 12px rgba(140,80,255,0.07);
+}
+.stat-val{font-family:'DM Serif Display',serif;font-size:28px;color:var(--mauve);}
+.stat-lbl{font-size:10px;color:var(--text3);letter-spacing:0.5px;}
+
+/* ALERT LIST */
+.alert-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 0;border-bottom:1px solid rgba(140,80,255,0.07);
+}
+.alert-item:last-child{border-bottom:none;}
+.alert-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--bg3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:600;color:var(--mauve);
+  flex-shrink:0;
+}
+.alert-info{flex:1;}
+.alert-name{font-size:13px;font-weight:500;color:var(--text);}
+.alert-days{font-size:11px;color:var(--text3);margin-top:1px;}
+.alert-badge{
+  padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;
+  letter-spacing:0.3px;
+}
+.badge-warn{background:rgba(251,191,36,0.1);color:var(--warn);}
+.badge-danger{background:rgba(255,107,107,0.1);color:var(--danger);}
+.badge-ok{background:rgba(110,231,183,0.1);color:var(--success);}
+
+/* SECTION TITLE */
+.section-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mauve);margin-bottom:10px;margin-top:4px;}
+
+/* FORMS */
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px;}
+.field label{font-size:11px;color:var(--text2);letter-spacing:0.3px;}
+.field input,.field select,.field textarea{
+  background:var(--bg);border:1px solid rgba(140,80,255,0.15);
+  border-radius:10px;padding:11px 13px;
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;
+  outline:none;transition:border-color 0.2s;width:100%;
+  -webkit-appearance:none;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--mauve);background:#fff;}
+.field textarea{resize:none;min-height:64px;}
+.field select{cursor:pointer;color:var(--text);}
+.field select option{background:#1a1428;color:var(--text);}
+
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* BUTTONS */
+.btn{
+  border:none;border-radius:12px;padding:13px 18px;
+  font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;transition:opacity 0.15s;width:100%;display:block;
+  text-align:center;
+}
+.btn:active{opacity:0.8;}
+.btn-primary{background:linear-gradient(135deg,var(--mauve),var(--mauve2));color:#fff;box-shadow:0 4px 20px rgba(124,58,237,0.3);}
+.btn-ghost{background:var(--mauve-dim);border:1px solid var(--border);color:var(--mauve);}
+.btn-danger{background:rgba(255,107,107,0.1);color:var(--danger);border:1px solid rgba(255,107,107,0.2);}
+.btn-sm{padding:8px 14px;font-size:12px;border-radius:8px;width:auto;display:inline-block;}
+
+/* CLIENT LIST */
+.cliente-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 0;border-bottom:1px solid rgba(140,80,255,0.07);
+  cursor:pointer;
+}
+.cliente-item:last-child{border-bottom:none;}
+.cliente-avatar{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--mauve-dim),var(--bg3));
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:600;color:var(--mauve);flex-shrink:0;
+}
+.cliente-info{flex:1;}
+.cliente-name{font-size:14px;font-weight:600;color:#ffffff;}
+.cliente-sub{font-size:11px;color:var(--text3);margin-top:2px;}
+.cliente-right{text-align:right;}
+.cliente-date{font-size:11px;color:var(--text3);}
+.cliente-visits{font-size:10px;color:var(--text3);margin-top:2px;}
+
+/* RDV LIST */
+.rdv-item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 0;border-bottom:1px solid rgba(140,80,255,0.07);
+}
+.rdv-item:last-child{border-bottom:none;}
+.rdv-date-block{
+  background:var(--bg3);border:1px solid var(--border);border-radius:10px;
+  padding:8px 10px;text-align:center;flex-shrink:0;min-width:44px;
+}
+.rdv-day{font-family:'DM Serif Display',serif;font-size:20px;color:var(--mauve);line-height:1;}
+.rdv-month{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;}
+.rdv-info{flex:1;}
+.rdv-name{font-size:13px;font-weight:500;color:var(--text);}
+.rdv-service{font-size:11px;color:var(--text3);margin-top:2px;}
+.rdv-heure{font-size:11px;color:var(--mauve);margin-top:1px;}
+.rdv-status{
+  padding:4px 9px;border-radius:20px;font-size:10px;font-weight:600;
+}
+.status-confirme{background:rgba(110,231,183,0.1);color:var(--success);}
+.status-attente{background:rgba(251,191,36,0.1);color:var(--warn);}
+.status-annule{background:rgba(255,107,107,0.1);color:var(--danger);}
+
+/* REÇU */
+.ligne-row{display:grid;grid-template-columns:1fr 52px 82px 28px;gap:6px;align-items:center;margin-bottom:6px;}
+.ligne-row input{
+  background:var(--bg);border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;padding:9px 9px;color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:13px;outline:none;width:100%;
+}
+.ligne-row input:focus{border-color:var(--mauve);}
+.remove-btn{
+  width:28px;height:28px;background:rgba(255,107,107,0.1);
+  border:none;border-radius:6px;color:var(--danger);font-size:18px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.add-ligne{
+  background:none;border:1px dashed rgba(180,127,255,0.25);
+  border-radius:9px;padding:9px;color:var(--mauve);font-size:12px;
+  cursor:pointer;width:100%;font-family:'DM Sans',sans-serif;margin-bottom:10px;
+}
+.total-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 0 0;border-top:1px solid rgba(255,255,255,0.06);
+}
+.total-lbl{font-size:11px;color:var(--text3);}
+.total-val{font-family:'DM Serif Display',serif;font-size:22px;color:var(--mauve);}
+
+/* RECEIPT PREVIEW */
+.recu-preview{
+  background:#fff;border-radius:18px;overflow:hidden;
+  box-shadow:0 8px 40px rgba(0,0,0,0.5);color:#1a1a1a;margin-bottom:14px;
+}
+.rp-head{background:linear-gradient(135deg,#1a0d2e,#0d0814);padding:20px;color:#fff;}
+.rp-head-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.rp-logo{display:flex;align-items:center;gap:8px;}
+.rp-logo-mark{
+  width:28px;height:28px;background:rgba(180,127,255,0.2);
+  border:1px solid rgba(180,127,255,0.4);border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'DM Serif Display',serif;font-size:13px;color:#b47fff;
+}
+.rp-logo-name{font-family:'DM Serif Display',serif;font-size:15px;color:#fff;}
+.rp-badge{
+  background:rgba(180,127,255,0.15);border:1px solid rgba(180,127,255,0.35);
+  border-radius:5px;padding:3px 9px;font-size:9px;color:#c89fff;
+  letter-spacing:1px;text-transform:uppercase;
+}
+.rp-biz{font-family:'DM Serif Display',serif;font-size:18px;color:#fff;margin-bottom:3px;}
+.rp-sector{font-size:11px;color:rgba(255,255,255,0.5);}
+.rp-meta{background:#f9f7fc;padding:12px 20px;display:grid;grid-template-columns:1fr 1fr;gap:10px;border-bottom:1px solid #ede8f5;}
+.rp-meta-lbl{font-size:9px;color:#9980b8;text-transform:uppercase;letter-spacing:0.5px;}
+.rp-meta-val{font-size:12px;color:#2d1a4a;font-weight:500;margin-top:1px;}
+.rp-body{padding:16px 20px;}
+.rp-th{display:grid;grid-template-columns:1fr 34px 72px;gap:6px;font-size:9px;color:#9980b8;letter-spacing:0.8px;text-transform:uppercase;padding-bottom:7px;border-bottom:1px solid #ede8f5;margin-bottom:8px;}
+.rp-th span:not(:first-child){text-align:right;}
+.rp-ligne{display:grid;grid-template-columns:1fr 34px 72px;gap:6px;padding:7px 0;border-bottom:1px solid #f3f0f8;align-items:center;}
+.rp-ligne:last-child{border-bottom:none;}
+.rp-desc{font-size:12px;color:#1a1a1a;font-weight:500;}
+.rp-qty{font-size:11px;color:#9980b8;text-align:right;}
+.rp-prix{font-size:12px;color:#2d1a4a;font-weight:600;text-align:right;}
+.rp-total{margin:6px 20px 0;background:linear-gradient(135deg,#1a0d2e,#0d0814);border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;}
+.rp-total-lbl{font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:1px;text-transform:uppercase;}
+.rp-total-val{font-family:'DM Serif Display',serif;font-size:22px;color:#b47fff;}
+.rp-note{margin:12px 20px;padding:10px 14px;background:#f9f7fc;border-radius:8px;font-size:11px;color:#9980b8;font-style:italic;}
+.rp-footer{padding:14px 20px 16px;text-align:center;border-top:1px dashed #e4ddf0;}
+.rp-merci{font-family:'DM Serif Display',serif;font-size:13px;color:#2d1a4a;}
+.rp-powered{font-size:9px;color:#c4b5d8;margin-top:3px;}
+
+/* MODAL */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(26,10,58,0.45);
+  z-index:100;display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.2s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{
+  background:#fff;border-radius:20px 20px 0 0;
+  border-top:2px solid var(--border);
+  padding:24px 20px 36px;
+  width:100%;max-width:480px;max-height:85vh;overflow-y:auto;
+  transform:translateY(100%);transition:transform 0.25s ease;
+}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 20px;}
+.modal-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--text);margin-bottom:18px;}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:40px 20px;}
+.empty-icon{font-size:40px;margin-bottom:12px;opacity:0.4;}
+.empty-text{font-size:13px;color:var(--text3);line-height:1.6;}
+
+/* SEARCH */
+.search-wrap{position:relative;margin-bottom:14px;}
+.search-wrap input{
+  background:#fff;border:1px solid var(--border);
+  border-radius:12px;padding:11px 13px 11px 38px;
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;
+  outline:none;width:100%;
+  box-shadow:0 1px 6px rgba(140,80,255,0.07);
+}
+.search-wrap input:focus{border-color:var(--mauve);}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;opacity:0.4;}
+
+/* FICHE CLIENTE */
+.fiche-section{margin-bottom:16px;}
+.fiche-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mauve);margin-bottom:8px;}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(140,80,255,0.07);}
+.info-row:last-child{border-bottom:none;}
+.info-key{font-size:12px;color:var(--text3);}
+.info-val{font-size:13px;color:var(--text);font-weight:500;}
+
+/* PILLS */
+.pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.pill{
+  background:var(--bg);border:1px solid rgba(255,255,255,0.08);
+  border-radius:20px;padding:6px 12px;font-size:12px;color:var(--text3);
+  cursor:pointer;transition:all 0.15s;
+}
+.pill.active{background:var(--mauve-dim);border-color:var(--mauve);color:var(--mauve);}
+
+/* HISTORIQUE VISITES */
+.visite-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04);
+  font-size:12px;
+}
+.visite-item:last-child{border-bottom:none;}
+.visite-dot{width:6px;height:6px;border-radius:50%;background:var(--mauve);flex-shrink:0;}
+.visite-date{color:var(--text3);width:80px;flex-shrink:0;}
+.visite-service{color:var(--text);flex:1;}
+.visite-montant{color:var(--mauve);font-weight:600;}
+
+/* BACK BTN */
+.back-btn{
+  display:flex;align-items:center;gap:6px;
+  background:none;border:none;color:var(--mauve);font-weight:600;
+  font-family:'DM Sans',sans-serif;font-size:13px;
+  cursor:pointer;padding:0;margin-bottom:16px;
+}
+
+/* SCROLL fix */
+::-webkit-scrollbar{width:0;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <div class="logo-mark">S</div>
+    <span class="logo-text">Suivo</span>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:10px;">
+      <div class="salon-name" style="text-align:right;">
+        <strong id="salonNameDisplay">Mon Salon</strong>
+        <span id="salonTypeDisplay">Salon de beauté</span>
+      </div>
+      <button onclick="openModal('modalSettings')" style="background:rgba(180,127,255,0.1);border:1px solid var(--border);border-radius:9px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;flex-shrink:0;">⚙️</button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ===== ACCUEIL ===== -->
+    <div class="tab-pane active" id="pane-accueil">
+      <div style="padding:16px 0 8px;">
+        <p style="font-size:11px;color:var(--text3);" id="dateToday"></p>
+        <h1 style="font-family:'DM Serif Display',serif;font-size:24px;color:var(--text);margin-top:2px;">Bonjour 👋</h1>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-val" id="statClientes">0</span>
+          <span class="stat-lbl">Clientes total</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-val" id="statRdvAuj">0</span>
+          <span class="stat-lbl">RDV aujourd'hui</span>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-val" id="statRelance">0</span>
+          <span class="stat-lbl">À relancer</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-val" id="statRdvSem">0</span>
+          <span class="stat-lbl">RDV cette semaine</span>
+        </div>
+      </div>
+
+      <!-- RDV du jour -->
+      <div class="card" id="rdvAujCard">
+        <div class="card-title">📅 RDV aujourd'hui</div>
+        <div id="rdvAujList"><div class="empty"><div class="empty-icon">📅</div><div class="empty-text">Aucun RDV aujourd'hui</div></div></div>
+      </div>
+
+      <!-- Clientes à relancer -->
+      <div class="card">
+        <div class="card-title">⚠️ Clientes à relancer</div>
+        <div id="relanceList"><div class="empty"><div class="empty-icon">✨</div><div class="empty-text">Toutes vos clientes sont récentes</div></div></div>
+      </div>
+    </div>
+
+    <!-- ===== CLIENTES ===== -->
+    <div class="tab-pane" id="pane-clientes">
+      <div id="clientesListView">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;margin-top:4px;">
+          <p class="section-title" style="margin:0;">Mes clientes</p>
+          <button class="btn btn-primary btn-sm" onclick="openModal('modalNouvelleCliente')">+ Nouvelle</button>
+        </div>
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Rechercher une cliente..." id="searchCliente" oninput="renderClientes()"/>
+        </div>
+        <div id="clientesList"></div>
+      </div>
+
+      <!-- FICHE CLIENTE (hidden by default) -->
+      <div id="ficheView" style="display:none;">
+        <button class="back-btn" onclick="closeFiche()">← Retour</button>
+        <div id="ficheContent"></div>
+      </div>
+    </div>
+
+    <!-- ===== REÇUS ===== -->
+    <div class="tab-pane" id="pane-recus">
+      <div id="recuFormView">
+        <p class="section-title">Nouveau reçu</p>
+
+        <div class="card">
+          <div class="card-title">Client</div>
+          <div class="field">
+            <label>Nom de la cliente</label>
+            <input id="recuClient" placeholder="Ex : Fatou Kone" list="clientesSuggest"/>
+            <datalist id="clientesSuggest"></datalist>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title" style="margin-bottom:8px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span>Prestations</span>
+              <span style="font-size:9px;color:var(--text3);">DÉSIGNATION · QTÉ · PRIX</span>
+            </div>
+          </div>
+          <div id="lignesContainer"></div>
+          <button class="add-ligne" onclick="addLigne()">+ Ajouter une prestation</button>
+          <div class="total-bar">
+            <span class="total-lbl">TOTAL</span>
+            <span class="total-val" id="totalDisplay">0 FCFA</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Note (optionnel)</div>
+          <div class="field">
+            <textarea id="recuNote" placeholder="Ex : Payé en espèces. Merci !"></textarea>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="genererRecu()">Générer le reçu →</button>
+      </div>
+
+      <!-- PREVIEW REÇU -->
+      <div id="recuPreviewView" style="display:none;">
+        <button class="back-btn" onclick="document.getElementById('recuFormView').style.display='block';document.getElementById('recuPreviewView').style.display='none';">← Modifier</button>
+        <div class="recu-preview" id="recuOutput"></div>
+        <button class="btn btn-primary" style="background:linear-gradient(135deg,#25d366,#128c4e);box-shadow:0 4px 16px rgba(37,211,102,0.25);margin-bottom:8px;" onclick="envoyerRecuWA()">📲 Envoyer le reçu sur WhatsApp</button>
+        <div style="text-align:center;font-size:11px;color:var(--text3);line-height:1.6;margin-bottom:12px;">ou</div>
+        <div style="text-align:center;font-size:12px;color:var(--text3);line-height:1.7;margin-bottom:14px;">
+          📸 <strong style="color:var(--mauve);">Capture d'écran</strong> du reçu visuel ci-dessus<br/>puis partage sur <strong style="color:var(--mauve);">WhatsApp</strong>
+        </div>
+        <button class="btn btn-primary" onclick="nouveauRecu()">Nouveau reçu</button>
+        <div style="height:8px;"></div>
+        <button class="btn btn-ghost" onclick="nouveauRecuMemeCliente()">Même cliente, nouveau reçu</button>
+      </div>
+    </div>
+
+    <!-- ===== RDV ===== -->
+    <div class="tab-pane" id="pane-rdv">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;margin-top:4px;">
+        <p class="section-title" style="margin:0;">Rendez-vous</p>
+        <button class="btn btn-primary btn-sm" onclick="openModal('modalNouveauRdv')">+ RDV</button>
+      </div>
+
+      <!-- Filtre -->
+      <div class="pill-row" style="margin-bottom:14px;" id="rdvFiltreRow">
+        <button class="pill active" onclick="setRdvFiltre('tous',this)">Tous</button>
+        <button class="pill" onclick="setRdvFiltre('confirme',this)">Confirmés</button>
+        <button class="pill" onclick="setRdvFiltre('attente',this)">En attente</button>
+        <button class="pill" onclick="setRdvFiltre('annule',this)">Annulés</button>
+      </div>
+
+      <div id="rdvList"></div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- TAB NAV -->
+  <nav class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('accueil',this)">
+      <span class="icon">🏠</span>
+      <span>Accueil</span>
+      <div class="tab-indicator"></div>
+    </button>
+    <button class="tab-btn" onclick="switchTab('clientes',this)">
+      <span class="icon">👩</span>
+      <span>Clientes</span>
+      <div class="tab-indicator"></div>
+    </button>
+    <button class="tab-btn" onclick="switchTab('recus',this)">
+      <span class="icon">🧾</span>
+      <span>Reçus</span>
+      <div class="tab-indicator"></div>
+    </button>
+    <button class="tab-btn" onclick="switchTab('rdv',this)">
+      <span class="icon">📅</span>
+      <span>RDV</span>
+      <div class="tab-indicator"></div>
+    </button>
+  </nav>
+
+</div><!-- /app -->
+
+<!-- ===== MODAL NOUVELLE CLIENTE ===== -->
+<div class="modal-overlay" id="modalNouvelleCliente" onclick="closeModalOutside(event,'modalNouvelleCliente')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Nouvelle cliente</div>
+    <div class="field"><label>Nom complet *</label><input id="nc_nom" placeholder="Ex : Aminata Kone"/></div>
+    <div class="field"><label>Téléphone</label><input id="nc_tel" placeholder="+229 97 00 00 00" type="tel"/></div>
+    <div class="field"><label>Service habituel</label><input id="nc_service" placeholder="Ex : Tresses, Lissage..."/></div>
+    <div class="field"><label>Dernière visite</label><input id="nc_derniere" type="date"/></div>
+    <div class="field"><label>Note</label><textarea id="nc_note" placeholder="Allergies, préférences..."></textarea></div>
+    <div style="height:10px;"></div>
+    <button class="btn btn-primary" onclick="saveCliente()">Enregistrer la cliente</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalNouvelleCliente')">Annuler</button>
+  </div>
+</div>
+
+<!-- ===== MODAL NOUVEAU RDV ===== -->
+<div class="modal-overlay" id="modalNouveauRdv" onclick="closeModalOutside(event,'modalNouveauRdv')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Nouveau RDV</div>
+    <div class="field"><label>Nom de la cliente *</label><input id="rdv_nom" placeholder="Ex : Fatou Diallo" list="clientesSuggestRdv"/><datalist id="clientesSuggestRdv"></datalist></div>
+    <div class="cols2">
+      <div class="field"><label>Date *</label><input id="rdv_date" type="date"/></div>
+      <div class="field"><label>Heure *</label><input id="rdv_heure" type="time"/></div>
+    </div>
+    <div class="field"><label>Service</label><input id="rdv_service" placeholder="Ex : Tresse box braids"/></div>
+    <div class="field"><label>Statut</label>
+      <select id="rdv_statut">
+        <option value="attente">En attente</option>
+        <option value="confirme">Confirmé</option>
+        <option value="annule">Annulé</option>
+      </select>
+    </div>
+    <div style="height:10px;"></div>
+    <button class="btn btn-primary" onclick="saveRdv()">Enregistrer le RDV</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalNouveauRdv')">Annuler</button>
+  </div>
+</div>
+
+<!-- ===== MODAL NOUVELLE VISITE ===== -->
+<div class="modal-overlay" id="modalNouvelleVisite" onclick="closeModalOutside(event,'modalNouvelleVisite')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Enregistrer une visite</div>
+    <input type="hidden" id="visite_clienteId"/>
+    <div class="field"><label>Date de la visite</label><input id="visite_date" type="date"/></div>
+    <div class="field"><label>Service(s) effectué(s)</label><input id="visite_service" placeholder="Ex : Tresse + soin"/></div>
+    <div class="field"><label>Montant encaissé (FCFA)</label><input id="visite_montant" type="number" placeholder="5000"/></div>
+    <div style="height:10px;"></div>
+    <button class="btn btn-primary" onclick="saveVisite()">Enregistrer</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalNouvelleVisite')">Annuler</button>
+  </div>
+</div>
+
+<script>
+// =================== DATA ===================
+let DB = JSON.parse(localStorage.getItem('suivo_salon') || '{"clientes":[],"rdvs":[],"salonName":"Mon Salon"}');
+
+function save(){localStorage.setItem('suivo_salon',JSON.stringify(DB));}
+function fmtFCFA(n){return Number(n).toLocaleString('fr-FR')+' FCFA';}
+function fmtDate(d){if(!d)return '—';const dt=new Date(d+'T00:00:00');return dt.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});}
+function todayISO(){return new Date().toISOString().split('T')[0];}
+function daysDiff(dateISO){if(!dateISO)return 999;const d=new Date(dateISO+'T00:00:00');const now=new Date();return Math.floor((now-d)/(1000*60*60*24));}
+function initials(name){return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);}
+function genId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function genNumero(){const d=new Date();return`SUV-${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-${Math.floor(100+Math.random()*900)}`;}
+
+// Salon name
+document.getElementById('salonNameDisplay').textContent = DB.salonName || 'Mon Salon';
+// settings handled by modal
+
+// Date header
+const dn = new Date();
+document.getElementById('dateToday').textContent = dn.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+// =================== TABS ===================
+function switchTab(name, btn){
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('pane-'+name).classList.add('active');
+  btn.classList.add('active');
+  if(name==='accueil') renderAccueil();
+  if(name==='clientes') renderClientes();
+  if(name==='rdv') renderRdv();
+  if(name==='recus') initRecuForm();
+}
+
+// =================== MODAL ===================
+function openModal(id){
+  document.getElementById(id).classList.add('open');
+  if(id==='modalNouvelleCliente'){
+    document.getElementById('nc_derniere').value=todayISO();
+    // clear
+    ['nc_nom','nc_tel','nc_service','nc_note'].forEach(f=>document.getElementById(f).value='');
+  }
+  if(id==='modalNouveauRdv'){
+    document.getElementById('rdv_date').value=todayISO();
+    ['rdv_nom','rdv_heure','rdv_service'].forEach(f=>document.getElementById(f).value='');
+    document.getElementById('rdv_statut').value='attente';
+    updateClienteSuggestRdv();
+  }
+  if(id==='modalNouvelleVisite'){
+    document.getElementById('visite_date').value=todayISO();
+    ['visite_service','visite_montant'].forEach(f=>document.getElementById(f).value='');
+  }
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function closeModalOutside(e,id){if(e.target===document.getElementById(id))closeModal(id);}
+
+// =================== CLIENTES ===================
+function saveCliente(){
+  const nom = document.getElementById('nc_nom').value.trim();
+  if(!nom){alert('Le nom est obligatoire.');return;}
+  DB.clientes.push({
+    id:genId(), nom, tel:document.getElementById('nc_tel').value.trim(),
+    service:document.getElementById('nc_service').value.trim(),
+    derniere:document.getElementById('nc_derniere').value,
+    note:document.getElementById('nc_note').value.trim(),
+    visites:[], createdAt:todayISO()
+  });
+  save();closeModal('modalNouvelleCliente');
+  renderClientes();renderAccueil();
+}
+
+function renderClientes(){
+  const q=(document.getElementById('searchCliente').value||'').toLowerCase();
+  const list = DB.clientes.filter(c=>c.nom.toLowerCase().includes(q));
+  const el = document.getElementById('clientesList');
+  if(!list.length){
+    el.innerHTML=`<div class="empty"><div class="empty-icon">👩</div><div class="empty-text">${q?'Aucun résultat':'Aucune cliente enregistrée'}</div></div>`;
+    return;
+  }
+  el.innerHTML = list.sort((a,b)=>a.nom.localeCompare(b.nom)).map(c=>{
+    const days = daysDiff(c.derniere);
+    let badge='', badgeTxt='';
+    if(days>30&&days<60){badge='badge-warn';badgeTxt=days+'j';}
+    else if(days>=60){badge='badge-danger';badgeTxt=days+'j';}
+    else{badge='badge-ok';badgeTxt='Active';}
+    return `<div class="cliente-item" onclick="openFiche('${c.id}')">
+      <div class="cliente-avatar">${initials(c.nom)}</div>
+      <div class="cliente-info">
+        <div class="cliente-name">${c.nom}</div>
+        <div class="cliente-sub">${c.service||'—'} · ${c.tel||'—'}</div>
+      </div>
+      <div class="cliente-right">
+        <div><span class="alert-badge ${badge}">${badgeTxt}</span></div>
+        <div class="cliente-visits" style="margin-top:4px;">${c.visites.length} visite(s)</div>
+      </div>
+    </div>`;
+  }).join('');
+  // update datalist
+  document.getElementById('clientesSuggest').innerHTML = DB.clientes.map(c=>`<option value="${c.nom}">`).join('');
+}
+
+function openFiche(id){
+  const c = DB.clientes.find(x=>x.id===id);
+  if(!c)return;
+  document.getElementById('clientesListView').style.display='none';
+  document.getElementById('ficheView').style.display='block';
+  const days = daysDiff(c.derniere);
+  let badge='badge-ok',badgeTxt='Active';
+  if(days>30&&days<60){badge='badge-warn';badgeTxt='À relancer';}
+  else if(days>=60){badge='badge-danger';badgeTxt='Inactive';}
+  const visHtml = c.visites.length ? c.visites.slice().reverse().map(v=>`
+    <div class="visite-item">
+      <div class="visite-dot"></div>
+      <span class="visite-date">${fmtDate(v.date)}</span>
+      <span class="visite-service">${v.service||'—'}</span>
+      <span class="visite-montant">${v.montant?fmtFCFA(v.montant):''}</span>
+    </div>`).join('') : `<div class="empty-text" style="font-size:12px;color:var(--text3);padding:8px 0;">Aucune visite enregistrée</div>`;
+
+  document.getElementById('ficheContent').innerHTML=`
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+      <div class="cliente-avatar" style="width:52px;height:52px;font-size:20px;">${initials(c.nom)}</div>
+      <div>
+        <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--text);">${c.nom}</div>
+        <span class="alert-badge ${badge}" style="margin-top:4px;display:inline-block;">${badgeTxt}</span>
+      </div>
+    </div>
+    <div class="card fiche-section">
+      <div class="fiche-label">Informations</div>
+      <div class="info-row"><span class="info-key">Téléphone</span><span class="info-val">${c.tel||'—'}</span></div>
+      <div class="info-row"><span class="info-key">Service habituel</span><span class="info-val">${c.service||'—'}</span></div>
+      <div class="info-row"><span class="info-key">Dernière visite</span><span class="info-val">${fmtDate(c.derniere)} (il y a ${days}j)</span></div>
+      <div class="info-row"><span class="info-key">Note</span><span class="info-val">${c.note||'—'}</span></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:14px;">
+      <button class="btn btn-primary btn-sm" style="flex:1;" onclick="openVisiteModal('${c.id}')">+ Visite</button>
+      <button class="btn btn-ghost btn-sm" style="flex:1;" onclick="openEditCliente('${c.id}')">✏️ Modifier</button>
+      ${c.tel?(()=>{const num=c.tel.replace(/[^0-9]/g,'');const full=num.startsWith('229')?num:'229'+num;return `<a href="https://wa.me/${full}" target="_blank" rel="noopener" class="btn btn-ghost btn-sm" style="text-decoration:none;display:flex;align-items:center;justify-content:center;">WhatsApp</a>`;})():''}
+    </div>
+    ${c.tel?`<div style="margin-bottom:10px;"><button class="btn btn-primary" style="background:linear-gradient(135deg,#25d366,#128c4e);box-shadow:0 4px 16px rgba(37,211,102,0.25);" onclick="openRelanceModal('${c.id}')">💬 Envoyer un message de relance WhatsApp</button></div>`:''}
+    <div style="margin-bottom:14px;">
+      <button class="btn btn-danger" onclick="deleteCliente('${c.id}')">Supprimer la cliente</button>
+    </div>
+    <div class="card">
+      <div class="fiche-label">Historique visites (${c.visites.length})</div>
+      ${visHtml}
+    </div>`;
+}
+function closeFiche(){
+  document.getElementById('clientesListView').style.display='block';
+  document.getElementById('ficheView').style.display='none';
+  renderClientes();
+}
+function deleteCliente(id){
+  document.getElementById('confirm_deleteId').value=id;
+  document.getElementById('confirm_type').value='cliente';
+  document.getElementById('confirm_msg').textContent='Supprimer cette cliente ? Toutes ses visites seront perdues.';
+  openModal('modalConfirm');
+}
+function deleteRdvConfirm(id){
+  document.getElementById('confirm_deleteId').value=id;
+  document.getElementById('confirm_type').value='rdv';
+  document.getElementById('confirm_msg').textContent='Supprimer ce rendez-vous ?';
+  openModal('modalConfirm');
+}
+function confirmDelete(){
+  const id=document.getElementById('confirm_deleteId').value;
+  const type=document.getElementById('confirm_type').value;
+  if(type==='cliente'){
+    DB.clientes=DB.clientes.filter(c=>c.id!==id);
+    save();closeModal('modalConfirm');closeFiche();renderAccueil();
+  } else if(type==='rdv'){
+    DB.rdvs=DB.rdvs.filter(r=>r.id!==id);
+    save();closeModal('modalConfirm');renderRdv();renderAccueil();
+  }
+}
+function openVisiteModal(id){
+  document.getElementById('visite_clienteId').value=id;
+  openModal('modalNouvelleVisite');
+}
+function saveVisite(){
+  const id=document.getElementById('visite_clienteId').value;
+  const c=DB.clientes.find(x=>x.id===id);
+  if(!c)return;
+  const date=document.getElementById('visite_date').value;
+  const service=document.getElementById('visite_service').value.trim();
+  const montant=document.getElementById('visite_montant').value;
+  c.visites.push({date,service,montant});
+  c.derniere=date;
+  save();closeModal('modalNouvelleVisite');
+  openFiche(id);
+  renderAccueil();
+}
+
+// =================== RDV ===================
+let rdvFiltre='tous';
+function setRdvFiltre(f,btn){
+  rdvFiltre=f;
+  document.querySelectorAll('#rdvFiltreRow .pill').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  renderRdv();
+}
+function saveRdv(){
+  const nom=document.getElementById('rdv_nom').value.trim();
+  const date=document.getElementById('rdv_date').value;
+  const heure=document.getElementById('rdv_heure').value;
+  if(!nom||!date||!heure){alert('Nom, date et heure sont obligatoires.');return;}
+  DB.rdvs.push({
+    id:genId(),nom,date,heure,
+    service:document.getElementById('rdv_service').value.trim(),
+    statut:document.getElementById('rdv_statut').value
+  });
+  save();closeModal('modalNouveauRdv');
+  renderRdv();renderAccueil();
+}
+function updateClienteSuggestRdv(){
+  document.getElementById('clientesSuggestRdv').innerHTML=DB.clientes.map(c=>`<option value="${c.nom}">`).join('');
+}
+function setStatutRdv(id,statut){
+  const r=DB.rdvs.find(x=>x.id===id);
+  if(r){r.statut=statut;save();renderRdv();renderAccueil();}
+}
+function deleteRdv(id){deleteRdvConfirm(id);}
+function renderRdv(){
+  const list=DB.rdvs.filter(r=>rdvFiltre==='tous'||r.statut===rdvFiltre)
+    .sort((a,b)=>a.date.localeCompare(b.date)||a.heure.localeCompare(b.heure));
+  const el=document.getElementById('rdvList');
+  if(!list.length){
+    el.innerHTML=`<div class="empty"><div class="empty-icon">📅</div><div class="empty-text">Aucun RDV ${rdvFiltre!=='tous'?'dans cette catégorie':''}</div></div>`;
+    return;
+  }
+  el.innerHTML=list.map(r=>{
+    const d=new Date(r.date+'T00:00:00');
+    const day=d.getDate();
+    const month=d.toLocaleDateString('fr-FR',{month:'short'});
+    const statusClass={confirme:'status-confirme',attente:'status-attente',annule:'status-annule'}[r.statut]||'status-attente';
+    const statusLbl={confirme:'Confirmé',attente:'En attente',annule:'Annulé'}[r.statut]||'En attente';
+    return `<div class="card" style="padding:12px;">
+      <div class="rdv-item" style="border:none;padding:0;">
+        <div class="rdv-date-block"><div class="rdv-day">${day}</div><div class="rdv-month">${month}</div></div>
+        <div class="rdv-info">
+          <div class="rdv-name">${r.nom}</div>
+          <div class="rdv-service">${r.service||'—'}</div>
+          <div class="rdv-heure">${r.heure}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+          <span class="rdv-status ${statusClass}">${statusLbl}</span>
+          <div style="display:flex;gap:6px;">
+            ${r.statut!=='confirme'?`<button class="btn btn-primary btn-sm" onclick="setStatutRdv('${r.id}','confirme')">✓</button>`:''}
+            <button class="btn btn-danger btn-sm" onclick="deleteRdv('${r.id}')">✕</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// =================== REÇUS ===================
+let lignes=[{description:'',quantite:1,prix:''}];
+let recuClienteActuelle='';
+
+function initRecuForm(){
+  renderLignes();
+  document.getElementById('clientesSuggest').innerHTML=DB.clientes.map(c=>`<option value="${c.nom}">`).join('');
+  if(recuClienteActuelle) document.getElementById('recuClient').value=recuClienteActuelle;
+}
+function addLigne(){lignes.push({description:'',quantite:1,prix:''});renderLignes();}
+function removeLigne(i){if(lignes.length>1){lignes.splice(i,1);renderLignes();}}
+function updateLigne(i,k,v){lignes[i][k]=v;updateTotal();}
+function updateTotal(){
+  const t=lignes.reduce((s,l)=>s+(Number(l.quantite)||1)*(Number(l.prix)||0),0);
+  document.getElementById('totalDisplay').textContent=fmtFCFA(t);
+}
+function renderLignes(){
+  document.getElementById('lignesContainer').innerHTML=lignes.map((l,i)=>`
+    <div class="ligne-row">
+      <input placeholder="Prestation..." value="${l.description}" oninput="updateLigne(${i},'description',this.value)"/>
+      <input inputmode="numeric" pattern="[0-9]*" value="${l.quantite||1}" oninput="updateLigne(${i},'quantite',this.value)" style="text-align:center;"/>
+      <input inputmode="numeric" pattern="[0-9]*" value="${l.prix||''}" oninput="updateLigne(${i},'prix',this.value)" placeholder="Prix FCFA" style="text-align:right;"/>
+      ${lignes.length>1?`<button class="remove-btn" onclick="removeLigne(${i})">×</button>`:'<span style="width:28px;"></span>'}
+    </div>`).join('');
+  updateTotal();
+}
+let lastRecuData={};
+function genererRecu(){
+  const client=document.getElementById('recuClient').value.trim()||'Cliente';
+  const note=document.getElementById('recuNote').value.trim();
+  const total=lignes.reduce((s,l)=>s+(Number(l.quantite)||1)*(Number(l.prix)||0),0);
+  const salonName=DB.salonName||'Mon Salon';
+  const numero=genNumero();
+  const date=new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+  lastRecuData={client,note,total,salonName,numero,date,lignes:[...lignes]};
+  const lignesHtml=lignes.filter(l=>l.description).map(l=>`
+    <div class="rp-ligne">
+      <span class="rp-desc">${l.description}</span>
+      <span class="rp-qty">${l.quantite}</span>
+      <span class="rp-prix">${fmtFCFA(Number(l.quantite)*Number(l.prix))}</span>
+    </div>`).join('');
+  document.getElementById('recuOutput').innerHTML=`
+    <div class="rp-head">
+      <div class="rp-head-top">
+        <div class="rp-logo"><div class="rp-logo-mark">S</div><span class="rp-logo-name">Suivo</span></div>
+        <span class="rp-badge">Reçu</span>
+      </div>
+      <div class="rp-biz">${salonName}</div>
+      <div class="rp-sector">${DB.salonType||"Salon de beauté"}</div>
+    </div>
+    <div class="rp-meta">
+      <div><div class="rp-meta-lbl">N° Reçu</div><div class="rp-meta-val">${numero}</div></div>
+      <div><div class="rp-meta-lbl">Date</div><div class="rp-meta-val">${date}</div></div>
+      <div style="grid-column:1/-1;"><div class="rp-meta-lbl">Cliente</div><div class="rp-meta-val">${client}</div></div>
+    </div>
+    <div class="rp-body">
+      <div class="rp-th"><span>Désignation</span><span>Qté</span><span>Montant</span></div>
+      ${lignesHtml}
+    </div>
+    <div class="rp-total"><span class="rp-total-lbl">Total</span><span class="rp-total-val">${fmtFCFA(total)}</span></div>
+    ${note?`<div class="rp-note">${note}</div>`:''}
+    <div class="rp-footer"><div class="rp-merci">Merci pour votre confiance 🙏</div><div class="rp-powered">Reçu généré par Suivo · suivo.africa</div></div>`;
+  recuClienteActuelle=client;
+  document.getElementById('recuFormView').style.display='none';
+  document.getElementById('recuPreviewView').style.display='block';
+}
+function nouveauRecu(){
+  lignes=[{description:'',quantite:1,prix:''}];
+  recuClienteActuelle='';
+  document.getElementById('recuClient').value='';
+  document.getElementById('recuNote').value='';
+  document.getElementById('recuFormView').style.display='block';
+  document.getElementById('recuPreviewView').style.display='none';
+  renderLignes();
+}
+function nouveauRecuMemeCliente(){
+  lignes=[{description:'',quantite:1,prix:''}];
+  document.getElementById('recuNote').value='';
+  document.getElementById('recuFormView').style.display='block';
+  document.getElementById('recuPreviewView').style.display='none';
+  renderLignes();
+}
+
+
+
+// =================== REÇU WHATSAPP ===================
+function envoyerRecuWA(){
+  const d = lastRecuData;
+  if(!d.client){alert('Génère d\'abord un reçu.');return;}
+  // Find cliente tel
+  const c = DB.clientes.find(x=>x.nom.toLowerCase()===d.client.toLowerCase());
+  const tel = c && c.tel ? c.tel : null;
+  // Build text receipt
+  const sep = '──────────────────';
+  const lignesText = d.lignes.filter(l=>l.description).map(l=>{
+    const mt = (Number(l.quantite)||1)*(Number(l.prix)||0);
+    return `• ${l.description} x${l.quantite||1}  →  ${fmtFCFA(mt)}`;
+  }).join('\n');
+  const msg = `🧾 REÇU — ${d.salonName}\n${sep}\nCliente : ${d.client}\nDate : ${d.date}\nN° : ${d.numero}\n${sep}\n${lignesText}\n${sep}\n💜 TOTAL : ${fmtFCFA(d.total)}\n${sep}\n${d.note?d.note+'\n':''}Merci pour votre confiance ! 🙏\nSuivo · suivo.africa`;
+  if(tel){
+    const num=tel.replace(/[^0-9]/g,'');
+    const full=num.startsWith('229')?num:'229'+num;
+    window.open('https://wa.me/'+full+'?text='+encodeURIComponent(msg),'_blank');
+  } else {
+    // No tel found — open WA without number so user picks contact
+    window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
+  }
+}
+
+// =================== MODIFIER CLIENTE ===================
+function openEditCliente(id){
+  const c=DB.clientes.find(x=>x.id===id);
+  if(!c)return;
+  document.getElementById('edit_clienteId').value=id;
+  document.getElementById('edit_nom').value=c.nom||'';
+  document.getElementById('edit_tel').value=c.tel||'';
+  document.getElementById('edit_service').value=c.service||'';
+  document.getElementById('edit_derniere').value=c.derniere||'';
+  document.getElementById('edit_note').value=c.note||'';
+  openModal('modalEditCliente');
+}
+function saveEditCliente(){
+  const id=document.getElementById('edit_clienteId').value;
+  const c=DB.clientes.find(x=>x.id===id);
+  if(!c)return;
+  const nom=document.getElementById('edit_nom').value.trim();
+  if(!nom){alert('Le nom est obligatoire.');return;}
+  c.nom=nom;
+  c.tel=document.getElementById('edit_tel').value.trim();
+  c.service=document.getElementById('edit_service').value.trim();
+  c.derniere=document.getElementById('edit_derniere').value;
+  c.note=document.getElementById('edit_note').value.trim();
+  save();
+  closeModal('modalEditCliente');
+  openFiche(id);
+  renderClientes();
+  renderAccueil();
+}
+
+
+// =================== RELANCE WHATSAPP ===================
+function genRelanceMessage(c, days){
+  const prenom = c.nom.split(' ')[0];
+  const salon = DB.salonName || 'notre salon';
+  const service = c.service ? ` Que ce soit pour ${c.service.toLowerCase()} ou autre chose` : '';
+  if(days >= 60){
+    return `Bonjour ${prenom} 😊\n\nCa fait un moment qu'on ne t'a pas vue chez ${salon} et tu nous manques !${service}, on est là pour toi.\n\nTu veux qu'on te réserve un créneau cette semaine ? 💜`;
+  } else {
+    return `Bonjour ${prenom} 😊\n\nOn pensait à toi chez ${salon} ! Ça fait ${days} jours qu'on ne t'a pas vue.${service}, dis-nous quand tu veux passer.\n\nÀ très vite ! 💜`;
+  }
+}
+function openRelanceModal(id){
+  const c=DB.clientes.find(x=>x.id===id);
+  if(!c)return;
+  const days=daysDiff(c.derniere);
+  const msg=genRelanceMessage(c,days);
+  document.getElementById('relance_clienteId').value=id;
+  document.getElementById('relance_message').value=msg;
+  document.getElementById('relance_nom').textContent=c.nom;
+  document.getElementById('relance_tel').textContent=c.tel||'(pas de numéro)';
+  openModal('modalRelance');
+}
+function envoyerRelanceWA(){
+  const id=document.getElementById('relance_clienteId').value;
+  const c=DB.clientes.find(x=>x.id===id);
+  if(!c||!c.tel){alert('Cette cliente n\'a pas de numéro enregistré.');return;}
+  const msg=document.getElementById('relance_message').value;
+  const num=c.tel.replace(/[^0-9]/g,'');
+  const full=num.startsWith('229')?num:'229'+num;
+  const url='https://wa.me/'+full+'?text='+encodeURIComponent(msg);
+  window.open(url,'_blank');
+  closeModal('modalRelance');
+}
+function copierRelance(){
+  const msg=document.getElementById('relance_message').value;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(msg).then(()=>{
+      const btn=document.getElementById('btnCopier');
+      btn.textContent='✓ Copié !';
+      btn.style.background='rgba(110,231,183,0.15)';
+      btn.style.color='#6ee7b7';
+      setTimeout(()=>{btn.textContent='📋 Copier le message';btn.style.background='';btn.style.color='';},2000);
+    });
+  } else {
+    const ta=document.getElementById('relance_message');
+    ta.select();document.execCommand('copy');
+    alert('Message copié !');
+  }
+}
+
+
+// =================== SETTINGS ===================
+const TYPES_SALON = ['Salon de beauté','Restaurant','Freelance','Autre'];
+
+function openSettings(){openModal('modalSettings');loadSettings();}
+function loadSettings(){
+  document.getElementById('set_nom').value = DB.salonName||'';
+  document.getElementById('set_tel').value = DB.salonTel||'';
+  document.getElementById('set_type').value = DB.salonType||'Salon de beauté';
+  document.getElementById('set_proprio').value = DB.salonProprio||'';
+}
+function saveSettings(){
+  const nom = document.getElementById('set_nom').value.trim();
+  if(!nom){alert('Le nom du salon est obligatoire.');return;}
+  DB.salonName = nom;
+  DB.salonTel = document.getElementById('set_tel').value.trim();
+  DB.salonType = document.getElementById('set_type').value;
+  DB.salonProprio = document.getElementById('set_proprio').value.trim();
+  save();
+  document.getElementById('salonNameDisplay').textContent = nom;
+  document.getElementById('salonTypeDisplay').textContent = DB.salonType;
+  closeModal('modalSettings');
+}
+function checkFirstLaunch(){
+  if(!DB.salonName || DB.salonName === 'Mon Salon'){
+    setTimeout(()=>{ openModal('modalSettings'); loadSettings(); }, 400);
+  }
+}
+
+// =================== ACCUEIL ===================
+function renderAccueil(){
+  const today=todayISO();
+  // Stats
+  document.getElementById('statClientes').textContent=DB.clientes.length;
+  const rdvAuj=DB.rdvs.filter(r=>r.date===today&&r.statut!=='annule');
+  document.getElementById('statRdvAuj').textContent=rdvAuj.length;
+  // Semaine
+  const now=new Date();
+  const startSem=new Date(now);startSem.setDate(now.getDate()-now.getDay()+1);
+  const endSem=new Date(startSem);endSem.setDate(startSem.getDate()+6);
+  const rdvSem=DB.rdvs.filter(r=>{const d=new Date(r.date+'T00:00:00');return d>=startSem&&d<=endSem&&r.statut!=='annule';});
+  document.getElementById('statRdvSem').textContent=rdvSem.length;
+  // Relance
+  const toRelance=DB.clientes.filter(c=>daysDiff(c.derniere)>=30);
+  document.getElementById('statRelance').textContent=toRelance.length;
+  // RDV aujourd'hui
+  const rdvAujEl=document.getElementById('rdvAujList');
+  if(rdvAuj.length){
+    rdvAujEl.innerHTML=rdvAuj.sort((a,b)=>a.heure.localeCompare(b.heure)).map(r=>`
+      <div class="alert-item">
+        <div class="alert-avatar">${initials(r.nom)}</div>
+        <div class="alert-info">
+          <div class="alert-name">${r.nom}</div>
+          <div class="alert-days">${r.heure} · ${r.service||'—'}</div>
+        </div>
+        <span class="alert-badge ${r.statut==='confirme'?'badge-ok':'badge-warn'}">${r.statut==='confirme'?'Confirmé':'En attente'}</span>
+      </div>`).join('');
+  } else {
+    rdvAujEl.innerHTML=`<div class="empty"><div class="empty-icon">📅</div><div class="empty-text">Aucun RDV aujourd'hui</div></div>`;
+  }
+  // Relance list
+  const relEl=document.getElementById('relanceList');
+  if(toRelance.length){
+    relEl.innerHTML=toRelance.sort((a,b)=>daysDiff(b.derniere)-daysDiff(a.derniere)).slice(0,5).map(c=>{
+      const d=daysDiff(c.derniere);
+      return `<div class="alert-item" style="flex-wrap:wrap;gap:8px;">
+        <div class="alert-avatar">${initials(c.nom)}</div>
+        <div class="alert-info" style="min-width:0;">
+          <div class="alert-name">${c.nom}</div>
+          <div class="alert-days">Dernière visite : il y a ${d} jours</div>
+        </div>
+        ${c.tel?`<button class="btn btn-primary btn-sm" style="flex-shrink:0;" onclick="openRelanceModal('${c.id}')">💬 Relancer</button>`:`<span class="alert-badge ${d>=60?'badge-danger':'badge-warn'}">${d>=60?'Inactive':'Pas de tel'}</span>`}
+      </div>`;
+    }).join('');
+  } else {
+    relEl.innerHTML=`<div class="empty"><div class="empty-icon">✨</div><div class="empty-text">Toutes vos clientes sont récentes</div></div>`;
+  }
+}
+
+// =================== INIT ===================
+document.getElementById('salonNameDisplay').textContent = DB.salonName||'Mon Salon';
+document.getElementById('salonTypeDisplay').textContent = DB.salonType||'Salon de beauté';
+renderAccueil();
+renderClientes();
+renderRdv();
+initRecuForm();
+checkFirstLaunch();
+</script>
+
+
+
+<!-- ===== MODAL CONFIRMATION ===== -->
+<div class="modal-overlay" id="modalConfirm" onclick="closeModalOutside(event,'modalConfirm')">
+  <div class="modal" style="padding-bottom:28px;">
+    <div class="modal-handle"></div>
+    <div style="text-align:center;font-size:32px;margin-bottom:12px;">⚠️</div>
+    <div id="confirm_msg" style="text-align:center;font-size:14px;color:var(--text);line-height:1.6;margin-bottom:24px;"></div>
+    <input type="hidden" id="confirm_deleteId"/>
+    <input type="hidden" id="confirm_type"/>
+    <button class="btn btn-danger" onclick="confirmDelete()">Oui, supprimer</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalConfirm')">Annuler</button>
+  </div>
+</div>
+
+<!-- ===== MODAL SETTINGS ===== -->
+<div class="modal-overlay" id="modalSettings" onclick="closeModalOutside(event,'modalSettings')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">⚙️ Paramètres du salon</div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:18px;line-height:1.6;">Personnalise l'app avec les informations de ton salon. Ces infos apparaissent sur les reçus.</div>
+    <div class="field"><label>Nom du salon *</label><input id="set_nom" placeholder="Ex : Salon Grâce Divine"/></div>
+    <div class="field"><label>Prénom de la gérante</label><input id="set_proprio" placeholder="Ex : Fatou"/></div>
+    <div class="field"><label>Type d'activité</label>
+      <select id="set_type">
+        <option value="Salon de beauté">✂️ Salon de beauté</option>
+        <option value="Restaurant">🍽️ Restaurant</option>
+        <option value="Freelance">💻 Freelance</option>
+        <option value="Autre">◆ Autre</option>
+      </select>
+    </div>
+    <div class="field"><label>Numéro WhatsApp du salon</label><input id="set_tel" placeholder="+229 97 00 00 00" type="tel"/></div>
+    <div style="height:10px;"></div>
+    <button class="btn btn-primary" onclick="saveSettings()">Enregistrer</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalSettings')">Annuler</button>
+  </div>
+</div>
+
+<!-- ===== MODAL RELANCE WHATSAPP ===== -->
+<div class="modal-overlay" id="modalRelance" onclick="closeModalOutside(event,'modalRelance')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">💬 Message de relance</div>
+    <input type="hidden" id="relance_clienteId"/>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;padding:12px;background:var(--bg3);border-radius:12px;border:1px solid var(--border);">
+      <div style="font-size:22px;">👩</div>
+      <div>
+        <div id="relance_nom" style="font-size:14px;font-weight:600;color:#fff;"></div>
+        <div id="relance_tel" style="font-size:12px;color:var(--text3);margin-top:2px;"></div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Message (modifiable)</label>
+      <textarea id="relance_message" style="min-height:140px;font-size:13px;line-height:1.6;"></textarea>
+    </div>
+    <div style="height:8px;"></div>
+    <button class="btn btn-primary" style="background:linear-gradient(135deg,#25d366,#128c4e);box-shadow:0 4px 16px rgba(37,211,102,0.2);" onclick="envoyerRelanceWA()">📲 Ouvrir dans WhatsApp</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" id="btnCopier" onclick="copierRelance()">📋 Copier le message</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalRelance')">Annuler</button>
+  </div>
+</div>
+
+<!-- ===== MODAL MODIFIER CLIENTE ===== -->
+<div class="modal-overlay" id="modalEditCliente" onclick="closeModalOutside(event,'modalEditCliente')">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Modifier la cliente</div>
+    <input type="hidden" id="edit_clienteId"/>
+    <div class="field"><label>Nom complet *</label><input id="edit_nom" placeholder="Nom complet"/></div>
+    <div class="field"><label>Téléphone</label><input id="edit_tel" placeholder="+229 97 00 00 00" type="tel"/></div>
+    <div class="field"><label>Service habituel</label><input id="edit_service" placeholder="Ex : Tresses, Lissage..."/></div>
+    <div class="field"><label>Dernière visite</label><input id="edit_derniere" type="date"/></div>
+    <div class="field"><label>Note</label><textarea id="edit_note" placeholder="Allergies, préférences..."></textarea></div>
+    <div style="height:10px;"></div>
+    <button class="btn btn-primary" onclick="saveEditCliente()">Enregistrer les modifications</button>
+    <div style="height:8px;"></div>
+    <button class="btn btn-ghost" onclick="closeModal('modalEditCliente')">Annuler</button>
+  </div>
+</div>
+
+</body>
+</html>
