@@ -279,6 +279,37 @@ footer{
   .products{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
   .proof-bar{padding:20px 40px;}
 }
+
+/* ── WHATSAPP FLOAT ── */
+.wa-float{
+  position:fixed;bottom:24px;right:20px;z-index:999;
+  display:flex;align-items:center;gap:10px;
+}
+.wa-btn{
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,#25d366,#128c4e);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(37,211,102,0.4);
+  text-decoration:none;font-size:26px;
+  animation:waPulse 2.5s infinite;
+  cursor:pointer;border:none;
+}
+.wa-label{
+  background:#fff;border:1px solid var(--border);
+  border-radius:20px;padding:8px 14px;
+  font-size:12px;font-weight:600;color:var(--text);
+  box-shadow:0 2px 12px rgba(140,80,255,0.12);
+  white-space:nowrap;
+  animation:waSlide 0.4s ease forwards;
+}
+@keyframes waPulse{
+  0%,100%{box-shadow:0 4px 20px rgba(37,211,102,0.4);}
+  50%{box-shadow:0 4px 28px rgba(37,211,102,0.7);}
+}
+@keyframes waSlide{
+  from{opacity:0;transform:translateX(10px);}
+  to{opacity:1;transform:translateX(0);}
+}
 </style>
 </head>
 <body>
@@ -580,6 +611,24 @@ function toggleFaq(el){
   const item = el.parentElement;
   item.classList.toggle('open');
 }
+
+// Hide WA label after 4s
+setTimeout(()=>{
+  const lbl=document.getElementById('waLabel');
+  if(lbl){lbl.style.display='none';}
+},4000);
+
 </script>
+
+<!-- WHATSAPP FLOAT -->
+<div class="wa-float" id="waFloat">
+  <div class="wa-label" id="waLabel">Nous contacter sur WhatsApp</div>
+  <a class="wa-btn" id="waBtn"
+     href="https://wa.me/22964115086?text=Bonjour%2C%20je%20viens%20de%20voir%20Suivo%20et%20je%20suis%20int%C3%A9ress%C3%A9(e)%20par%20le%20CRM%20pour%20mon%20commerce."
+     target="_blank" rel="noopener">
+    💬
+  </a>
+</div>
+
 </body>
 </html>
